@@ -92,7 +92,11 @@ const FeaturesSection: React.FC = () => {
       {/*  3rd  Div*/}
       <div className="flex gap-[1.25rem] flex-wrap  flex-col-reverse sm:flex-row relative">
         <div className="lg:w-[50%] ">
-          <img src={PurchaseTable} alt="Purchase Table" className="w-[80%]" />
+          <img
+            src={PurchaseTable}
+            alt="Purchase Table"
+            className="sm:w-[80%]"
+          />
         </div>
         <div className="flex flex-col gap-[2.5rem] lg:w-[45%] ml-auto">
           <h2 className="text-[3.25rem]  font-semibold text-white ">
