@@ -1,0 +1,16 @@
+{
+  "extends": "@tsconfig/node18-strictest/tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
