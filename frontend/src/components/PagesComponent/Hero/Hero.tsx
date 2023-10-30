@@ -20,7 +20,8 @@ const Hero: React.FC = () => {
 
   return (
     <section className="flex  gap-[5rem] lg:my-[2.5rem] py-[2.5rem] flex-wrap relative  flex-col lg:flex-row">
-      <div className=" card-progress_bar w-[200px]   justify-between  px-[1rem] items-center absolute -z-[10]  left-[480px] hidden lg:flex">
+      {/*  Calls FLow Card */}
+      {/* <div className=" card-progress_bar w-[200px]   justify-between  px-[1rem] items-center absolute -z-[10]  left-[480px] hidden lg:flex">
         <div className="flex flex-col gap-[.7rem] -mt-4">
           <h4 className="font-bold text-white opacity-[.5]  text-[.6rem] ">
             CALLS FLOW
@@ -33,7 +34,7 @@ const Hero: React.FC = () => {
             78.7%
           </span>
         </div>
-      </div>
+      </div> */}
       {/*  left content */}
       <div className="flex flex-col gap-[2rem] flex-1 flex-wrap ml:pt-[3rem] ">
         <h1 className="text-center md:text-left text-white font-bold text-[3rem]">

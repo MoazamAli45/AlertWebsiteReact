@@ -15,15 +15,15 @@ const Row: React.FC<RowProps> = ({ item }) => {
          hover:bg-[#40B5AD] hover:scale-x-[1.4] transform    transition-all duration-300`}
     >
       {/* ==> Entry 1  */}
-      <div className="text-[.8rem] font-[700] group-hover:text-[1rem]">
+      <div className="text-[.8rem] font-[700] group-hover:text-[1.2rem]">
         {item.name}
       </div>
       {/* ==> Entry 2  */}
-      <div className="text-[.8rem] font-[700] group-hover:text-[1rem]">
+      <div className="text-[.8rem] font-[700] group-hover:text-[1.2rem]">
         Call
       </div>
       {/* ==> Entry 3  */}
-      <div className="text-[.8rem] font-[700] group-hover:text-[1rem]">
+      <div className="text-[.8rem] font-[700] group-hover:text-[1.2rem]">
         ${item.price}
       </div>
       {/* ==> Background  */}
