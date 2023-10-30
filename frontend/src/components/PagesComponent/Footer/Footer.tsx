@@ -58,7 +58,7 @@ function Footer() {
           <span className="text-[.8rem]">Privacy & Terms </span>
           <span className="text-[.8rem]">Contact Us </span>
         </div>
-        <div className="text-[.8rem]">Copyright @ 2022 xpence</div>
+        <div className="text-[.8rem]">Copyright @ 2023 xpence</div>
         <div className="flex gap-[.7rem]">
           <YouTubeIcon />
           <FacebookIcon />

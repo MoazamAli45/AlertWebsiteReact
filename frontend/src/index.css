@@ -42,7 +42,7 @@ a:hover {
 }
 .btn-login {
   /* Adjust as needed */
-  background: linear-gradient(#121f2d, rgba(18, 31, 45, 1)) padding-box,
+  background: linear-gradient(#1b2839, #1b2839) padding-box,
     linear-gradient(102deg, #2cdbbe 8.84%, #669ce9 55.1%) border-box;
   color: white;
   border: 1px solid transparent;
@@ -120,4 +120,15 @@ a:hover {
   background: rgba(35, 48, 68, 0.23);
 
   backdrop-filter: blur(120px);
+}
+
+.btn-price {
+  border-radius: 45px;
+  background: linear-gradient(102deg, #2cdbbe 8.84%, #669ce9 55.1%);
+  box-shadow: 0px 0px 23px 0px rgba(44, 219, 190, 0.28);
+  width: 100px;
+}
+
+.diamond-icon {
+  filter: drop-shadow(0 0 1rem #2bc1ae);
 }

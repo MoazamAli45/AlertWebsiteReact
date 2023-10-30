@@ -5,6 +5,7 @@ import ParticleEffect from '@/components/PagesComponent/ParticlesBackground/Part
 import Wrapper from '@/components/PagesComponent/Wrapper/Wrapper';
 import DataSection from '@/components/PagesSection/DataSection/DataSection';
 import FeaturesSection from '@/components/PagesSection/FeaturesSection/FeaturesSection';
+import PriceSection from '@/components/PagesSection/PriceSection/PriceSection';
 import React from 'react';
 
 const HomePage: React.FC = () => {
@@ -16,6 +17,7 @@ const HomePage: React.FC = () => {
         <ParticleEffect />
         <DataSection />
         <FeaturesSection />
+        <PriceSection />
         <Footer />
       </Wrapper>
     </div>

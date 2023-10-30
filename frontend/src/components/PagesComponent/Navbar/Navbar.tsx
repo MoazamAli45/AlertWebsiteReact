@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
               </button>
 
               {isOpenMenu && (
-                <div className="origin-top-right absolute right-[1.3rem] mt-2 w-55 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none ">
+                <div className="origin-top-right absolute right-[1.3rem] mt-2 w-55 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-[10]">
                   <div
                     className="py-1"
                     role="menu"
