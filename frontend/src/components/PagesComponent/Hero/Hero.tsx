@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CustomTable from '../CustomTable/CustomTable';
 import { useNavigate } from 'react-router-dom';
 import RightArrow from '@/assets/icons/RightArrow';
-import GreenCircularProgress from '@/assets/icons/GreenCircularProgress';
+// import GreenCircularProgress from '@/assets/icons/GreenCircularProgress';
 const Hero: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const navigate = useNavigate();
