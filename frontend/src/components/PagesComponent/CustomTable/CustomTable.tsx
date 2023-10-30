@@ -12,9 +12,9 @@ const data: DataItem[] = [
   { key: 0, name: 'SPY', price: 7088659, width: 'w-[100%]' },
   { key: 25, name: 'NVDA', price: 3809036, width: 'w-[80%]' },
   { key: 50, name: 'QQQ', price: 2542176, width: 'w-[70%]' },
-  { key: 50, name: 'META', price: 1858870, width: 'w-[70%]' },
+  // { key: 50, name: 'META', price: 1858870, width: 'w-[70%]' },
   { key: 50, name: 'IWM', price: 1504351, width: 'w-[60%]' },
-  { key: 50, name: 'TSLA', price: 1501251, width: 'w-[40%]' },
+  // { key: 50, name: 'TSLA', price: 1501251, width: 'w-[40%]' },
   { key: 50, name: 'AMD', price: 1322782, width: 'w-[30%]' },
   { key: 50, name: 'AAPL', price: 1201369, width: 'w-[20%]' },
   { key: 50, name: 'AMZN', price: 1167080, width: 'w-[10%]' },
@@ -28,7 +28,7 @@ const CustomTable: React.FC = () => {
 
   return (
     <div
-      className="w-[80%] mx-auto lg:mx-0    lg:w-full h-full xl:w-[500px] xl:mx-auto flex flex-col justify-start bg-cover py-[2rem] px-[2.5rem] rounded-3xl gap-[1.2rem] md:w-[80%]"
+      className="w-[80%] mx-auto lg:mx-0    lg:w-full h-full     xl:w-[530px] xl:mx-auto    flex flex-col justify-start bg-cover py-[2rem] px-[2.5rem] rounded-3xl gap-[1.2rem] md:w-[80%]"
       style={{
         backgroundImage: `url(${BackgroundTable})`,
         backgroundSize: 'cover',

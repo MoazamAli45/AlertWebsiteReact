@@ -14,17 +14,20 @@ const Navbar: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpenMenu(!isOpen);
   };
 
+  //  For outside
+
   const handleSignOut = () => {
     localStorage.removeItem('User');
     setIsLogin(false);
-    setProfile(null);
     toggleMenu();
+    setProfile(null);
     window.location.reload();
   };
 
@@ -82,7 +85,7 @@ const Navbar: React.FC = () => {
               </button>
 
               {isOpenMenu && (
-                <div className="origin-top-right absolute right-[1.3rem] mt-2 w-55 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="origin-top-right absolute right-[1.3rem] mt-2 w-55 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none ">
                   <div
                     className="py-1"
                     role="menu"
@@ -99,14 +102,15 @@ const Navbar: React.FC = () => {
                     </div>
                     {/* Add more menu items as needed */}
                   </div>
+
                   <div
-                    className="py-1"
+                    className="py-1 "
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
                     <div
-                      className="px-4 py-2 cursor-pointer flex items-center hover:bg-gray-200"
+                      className="px-4 py-2 cursor-pointer flex items-center  z-10 hover:bg-gray-200"
                       role="menuitem"
                       onClick={handleSignOut}
                     >
@@ -127,7 +131,7 @@ const Navbar: React.FC = () => {
               <button onClick={() => setIsOpenMenu(!isOpenMenu)}>
                 <Avatar alt={profile?.name} src={profile?.picture} />
               </button>
-
+              {/*      For Mobile Menu */}
               {isOpenMenu && (
                 <div className="origin-top-right absolute right-[1.4rem] mt-2 w-55 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div
@@ -137,23 +141,7 @@ const Navbar: React.FC = () => {
                     aria-labelledby="options-menu"
                   >
                     <div
-                      className="px-6 py-2 cursor-pointer flex items-center hover:bg-gray-200 "
-                      role="menuitem"
-                    >
-                      <span className="text-[#001A23]">
-                        Sign In as {profile?.name}
-                      </span>
-                    </div>
-                    {/* Add more menu items as needed */}
-                  </div>
-                  <div
-                    className="py-1"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="options-menu"
-                  >
-                    <div
-                      className="px-4 py-2 cursor-pointer flex items-center hover:bg-gray-200"
+                      className="px-4 py-2 cursor-pointer flex items-center hover:bg-gray-200 z-10"
                       role="menuitem"
                       onClick={handleSignOut}
                     >

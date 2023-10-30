@@ -40,7 +40,7 @@ const FeaturesSection: React.FC = () => {
           className="absolute top-0 right-0 -z-[10] "
         />
         <div className=" lg:w-[50%] ">
-          <h2 className="text-[3.25rem]  font-semibold text-white lg:w-[85%] ">
+          <h2 className="text-[3.25rem]  font-semibold text-white   lg:w-[85%] ">
             <span className="text-secondary"> Historical </span> Flow with
             <span className="text-[#FFF585]"> premium statistics </span>
           </h2>
@@ -49,7 +49,7 @@ const FeaturesSection: React.FC = () => {
           <div className="flex flex-col gap-4">
             <div className="flex gap-[.7rem] flex-col  items-center sm:flex-row">
               {/*   Card1 */}
-              <div className=" card-progress_bar w-full sm:w-1/2 flex  justify-between  p-[1rem] items-center ">
+              <div className=" card-progress_bar w-full h-[100px] sm:w-1/2 flex  justify-between  p-[1rem] items-center ">
                 <div className="flex flex-col gap-[.7rem]">
                   <h4 className="font-bold text-white opacity-[.5]  text-[.7rem] ">
                     CALLS PREMIUM
@@ -60,13 +60,13 @@ const FeaturesSection: React.FC = () => {
                 </div>
                 <div className="realtive">
                   <GreenCircularProgress />
-                  <span className="text-[13px] font-medium text-white absolute  bottom-[66px]  right-[60px] ">
+                  <span className="text-[13px] font-medium text-white absolute  bottom-[40px]  right-[60px] ">
                     78.7%
                   </span>
                 </div>
               </div>
               {/*  Card2 */}
-              <div className=" card-progress_bar w-full sm:w-1/2 flex  justify-between px-[1.5rem] py-[.7rem] items-center ">
+              <div className=" card-progress_bar w-full h-[100px] sm:w-1/2 flex  justify-between px-[1.5rem] py-[.7rem] items-center ">
                 <div className="flex flex-col gap-[.7rem] ">
                   <h4 className="font-bold text-white opacity-[.5]  text-[.7rem] ">
                     CALLS PREMIUM
@@ -77,7 +77,7 @@ const FeaturesSection: React.FC = () => {
                 </div>
                 <div className="realtive">
                   <RedCircularProgress />
-                  <span className="text-[13px] font-medium text-white absolute  bottom-[66px]  right-[60px] ">
+                  <span className="text-[13px] font-medium text-white absolute  bottom-[40px]  right-[60px] ">
                     32.2%
                   </span>
                 </div>

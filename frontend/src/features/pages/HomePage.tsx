@@ -13,10 +13,10 @@ const HomePage: React.FC = () => {
       <Wrapper>
         <Navbar />
         <Hero />
+        <ParticleEffect />
         <DataSection />
         <FeaturesSection />
         <Footer />
-        <ParticleEffect />
       </Wrapper>
     </div>
   );
