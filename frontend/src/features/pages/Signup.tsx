@@ -9,11 +9,13 @@ const Signup = () => {
     <section className="min-h-screen flex justify-center items-center font-ibm py-[6rem] ml:py-0  page">
       {/*  Signup Card */}
       <div className="rounded-[24px] overflow-hidden w-[70%] flex  ml:flex-row  flex-col-reverse">
-        <div className="ml:w-2/3  left-login px-[1.8rem] ml:p-[3rem] py-[2.4rem] pb-[3rem]">
+        <div className="ml:w-2/3  left-login px-[1.8rem] ml:p-[3rem]  2xl:p-[5rem] py-[2.4rem] pb-[3rem]">
           {/*  inside  Signup*/}
           <div className="flex flex-col gap-[1.2rem]">
-            <h2 className="font-bold text-[3rem] text-white">Signup</h2>
-            <p className="text-[.9rem] font-light">
+            <h2 className="font-bold text-[3rem] 2xl:text-[52px] text-white">
+              Signup
+            </h2>
+            <p className="text-[.9rem] 2xl:text-[18px] font-light">
               If You are already a member? Log In{' '}
               <Link to="/login" className="text-[#5B9BFF] underline">
                 here
@@ -54,11 +56,11 @@ const Signup = () => {
             <div>
               <img src={Logo1} alt="logo" />
             </div>
-            <div className="flex flex-col gap-[1rem]">
-              <h4 className="text-[1.4rem] font-semibold">
+            <div className="flex flex-col gap-[1rem] 2xl:gap-[1.2rem]">
+              <h4 className="text-[1.4rem] 2xl:text-[1.6rem] font-semibold">
                 “Lorem ipsum dolor sit amet consectetur ”
               </h4>
-              <p className="text-[.8rem] font-normal">
+              <p className="text-[.8rem] font-normal 2xl:text-[1rem]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore
               </p>

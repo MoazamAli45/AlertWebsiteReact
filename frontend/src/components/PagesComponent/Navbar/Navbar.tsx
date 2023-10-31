@@ -11,11 +11,24 @@ import SignupIcon from '@/assets/icons/SignupIcon';
 import { Link } from 'react-scroll';
 import Wrapper from '../Wrapper/Wrapper';
 
+interface Profile {
+  email: string;
+  email_verified: boolean;
+  family_name: string;
+  given_name: string;
+  locale: string;
+  name: string;
+  picture: string;
+  sub: string;
+}
+
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+
+  // console.log(profile);
 
   const navigate = useNavigate();
 
@@ -143,7 +156,7 @@ const Navbar: React.FC = () => {
           )}
         </div>
         {/*  hamburger Icon */}
-        <div className="flex gap-[1rem] xl:hidden">
+        <div className="flex gap-[1rem] lg:hidden">
           {isLogin && (
             <div>
               <button onClick={() => setIsOpenMenu(!isOpenMenu)}>

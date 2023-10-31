@@ -2,7 +2,6 @@ import React from 'react';
 import PriceCard from '/price-card.png';
 import DiamondIcon from '@/assets/icons/DiamondIcon';
 import CircleTick from '@/assets/icons/CircleTick';
-import Wrapper from '@/components/PagesComponent/Wrapper/Wrapper';
 
 const data = [
   {

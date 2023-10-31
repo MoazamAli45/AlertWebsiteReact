@@ -10,7 +10,7 @@ import Wrapper from '@/components/PagesComponent/Wrapper/Wrapper';
 const FeaturesSection: React.FC = () => {
   return (
     <section
-      className="flex flex-col  py-[3rem] lg:my-[4rem] gap-[4rem] "
+      className="flex flex-col  py-[3rem] lg:my-[4rem] gap-[4rem] 2xl:gap-[6rem]"
       id="feature"
     >
       {/*   1st Div */}
@@ -103,7 +103,7 @@ const FeaturesSection: React.FC = () => {
       </div>
       {/*  3rd  Div*/}
       <Wrapper>
-        <div className="flex gap-[1.25rem] flex-wrap  flex-col-reverse sm:flex-row  sm:items-center relative">
+        <div className="flex gap-[1.25rem] flex-wrap  flex-col-reverse sm:flex-row  sm:items-center 2xl:items-start relative">
           <div className="lg:w-[50%] ">
             <img
               src={PurchaseTable}
