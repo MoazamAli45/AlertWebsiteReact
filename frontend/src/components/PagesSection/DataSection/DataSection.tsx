@@ -29,7 +29,7 @@ const DataSection: React.FC = () => {
           individuals are buying/selling
         </p>
         {/*   Boxes */}
-        <div className="flex flex-col gap-[1.5rem] w-[85%] mx-auto  sm:mx-0 sm:w-[95%]  ">
+        <div className="flex flex-col gap-[1.5rem] w-[95%] mx-auto  sm:mx-0 sm:w-[95%]  ">
           <div className="data-box px-[3.4rem] py-[2rem]  ">
             <div className="flex gap-[1.4rem] items-center flex-wrap sm:flex-row flex-col">
               <div>
