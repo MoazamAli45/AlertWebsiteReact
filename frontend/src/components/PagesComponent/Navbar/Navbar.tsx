@@ -10,6 +10,7 @@ import 'react-modern-drawer/dist/index.css';
 import SignupIcon from '@/assets/icons/SignupIcon';
 import { Link } from 'react-scroll';
 import Wrapper from '../Wrapper/Wrapper';
+import GlowComponent from '../GlowComponent/GlowComponent';
 
 interface Profile {
   email: string;
@@ -63,8 +64,9 @@ const Navbar: React.FC = () => {
     <Wrapper>
       <nav className="flex  justify-between  py-[2rem] items-center ">
         {/*  Logo  */}
-        <div>
+        <div className="relative">
           <img src={Logo1} alt="logo" />
+          <GlowComponent className="absolute -top-[50px] -left-[120px]" />
         </div>
         {/*    Content */}
         <div className="hidden lg:flex  gap-[5rem] items-center">

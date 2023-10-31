@@ -141,3 +141,43 @@ a:hover {
 .diamond-icon {
   filter: drop-shadow(0 0 1rem #2bc1ae);
 }
+
+/* .glow {
+  border-radius: 200px;
+  box-shadow: #1f334b 0 0 80px 30px;
+} */
+
+.glow {
+  /* The color of the glow */
+  border-radius: 60%; /* Make it a circle */
+  background-color: #669ce9;
+  opacity: 0.15;
+  width: 200px;
+  height: 200px;
+  /* width: 100px;
+  height: 100px; */
+  box-shadow: 0 0 120px 120px rgb(102, 156, 233, 0.98);
+  /* Adjust the spread and size of the glow */
+}
+
+/*  Scroll To Top Styling Button */
+.scroll-top {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  background-color: rgba(18, 31, 45, 1);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 1em;
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+.scroll-top:hover {
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .scroll-top {
+    size: 0.5em;
+  }
+}

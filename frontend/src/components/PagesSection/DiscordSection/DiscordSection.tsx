@@ -5,6 +5,7 @@ import DiscordImage from '/DicordImage.png';
 import BackgroundImage from '/Design.png';
 import SmallBackground from '/smallBackground.png';
 import Wrapper from '@/components/PagesComponent/Wrapper/Wrapper';
+import GlowComponent from '@/components/PagesComponent/GlowComponent/GlowComponent';
 
 const DiscordSection: React.FC = () => {
   return (
@@ -21,7 +22,10 @@ const DiscordSection: React.FC = () => {
       />
       <Wrapper>
         <div className="flex my-[4rem] py-[2rem]  gap-[2rem] items-center lg:flex-row flex-col">
-          <div className="flex flex-col gap-[12px] flex-1 justify-center sm:justify-start">
+          <div
+            className="flex flex-col gap-[12px] flex-1 justify-center sm:justify-start"
+            data-aos="fade-right"
+          >
             <h2 className="text-secondary text-[48px] 2xl:text-[52px] font-normal ">
               Join us on <span className="text-[#669CE9]">Discord</span>
             </h2>
@@ -71,10 +75,12 @@ const DiscordSection: React.FC = () => {
           </div>
           <div className="flex-1">
             <div className=" relative ">
+              <GlowComponent className="absolute left-[80px] -top-[80px] -z-[1]" />
               <img
                 src={DiscordImage}
                 alt="Data Table"
                 className=" object-contain  pt-[3.8rem] 2xl:w-full "
+                data-aos="fade-left"
               />
             </div>
           </div>

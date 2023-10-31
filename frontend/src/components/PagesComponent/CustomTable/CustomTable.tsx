@@ -28,7 +28,7 @@ const CustomTable: React.FC = () => {
 
   return (
     <div
-      className="w-[80%] mx-auto lg:mx-0    lg:w-full h-full     xl:w-[530px] xl:mx-auto  2xl:w-full 2xl:py-[3rem] 2xl:px-[5rem] flex flex-col justify-start bg-cover py-[2rem] px-[2.5rem] rounded-3xl gap-[1.2rem] md:w-[80%]"
+      className="w-[80%] mx-auto lg:mx-0    lg:w-full h-full     xl:w-[530px] xl:mx-auto  2xl:w-[550px] 2xl:py-[3rem] 2xl:px-[3rem] flex flex-col justify-start bg-cover py-[2rem] px-[2.5rem] rounded-3xl gap-[1.2rem] md:w-[80%]"
       style={{
         backgroundImage: `url(${BackgroundTable})`,
         backgroundSize: 'cover',
@@ -41,7 +41,7 @@ const CustomTable: React.FC = () => {
         Top Gainers
       </h2>
       {/* Table  */}
-      <div className="max-w-[400px] 2xl:max-w-[97%] h-auto flex flex-col items-center justify-start text-center gap-2 ">
+      <div className="max-w-[400px]  h-auto flex flex-col items-center justify-start text-center gap-2 ">
         {/* Table Header  */}
         <div className="w-full grid grid-cols-3 bg-transparent bg-opacity-40 py-3 rounded-lg">
           {/* ==> Col 1  */}

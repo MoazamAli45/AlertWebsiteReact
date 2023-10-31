@@ -16,7 +16,10 @@ const DataSection: React.FC = () => {
         alt="Background"
         className="absolute top-0 right-0 -z-[10]"
       />
-      <div className="flex flex-col gap-[1.4rem] items-start  flex-1 justify-center sm:justify-start pl-[30px]">
+      <div
+        className="flex flex-col gap-[1.4rem] items-start  flex-1 justify-center sm:justify-start pl-[30px]"
+        data-aos="fade-right"
+      >
         <h2 className="text-secondary text-[3rem] font-semibold 2xl:text-[52px] ">
           Options Flow
         </h2>
@@ -63,7 +66,7 @@ const DataSection: React.FC = () => {
         </div>
       </div>
       <div className="flex-1">
-        <div className=" relative 2xl:w-full  ">
+        <div className=" relative 2xl:w-full  " data-aos="fade-left">
           <img
             src={DataTable}
             alt="Data Table"

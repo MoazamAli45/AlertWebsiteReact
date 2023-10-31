@@ -7,6 +7,7 @@ import GreenCircularProgress from '@/assets/icons/GreenCircularProgress';
 import RedCircularProgress from '@/assets/icons/RedCircularProgress';
 import SmallBackground from '/smallBackground.png';
 import Wrapper from '@/components/PagesComponent/Wrapper/Wrapper';
+import GlowComponent from '@/components/PagesComponent/GlowComponent/GlowComponent';
 const FeaturesSection: React.FC = () => {
   return (
     <section
@@ -15,18 +16,27 @@ const FeaturesSection: React.FC = () => {
     >
       {/*   1st Div */}
       <Wrapper>
-        <div className="flex gap-[1.25rem] flex-wrap items-center  flex-col-reverse lg:flex-row ">
+        <div
+          className="flex gap-[1.25rem] flex-wrap items-center  flex-col-reverse lg:flex-row "
+          data-aos="fade-right"
+        >
           <div className="lg:w-[50%] ">
             <img src={Category} alt="Category" className="lg:w-[80%]" />
           </div>
 
           <div className="flex flex-col gap-[2.5rem] lg:w-[45%] ml-auto">
-            <h2 className="text-[3.25rem] 2xl:text-[60px] font-semibold text-white ">
+            <h2
+              className="text-[3.25rem] 2xl:text-[60px] font-semibold text-white "
+              data-aos="fade-left"
+            >
               Features That Make It
               <span className="text-secondary"> Easy </span>
               For You
             </h2>
-            <p className="text-[1rem] 2xl:text-[20px] text-white font-thin leading-8">
+            <p
+              className="text-[1rem] 2xl:text-[20px] text-white font-thin leading-8"
+              data-aos="fade-left"
+            >
               Our web app is in early access, here is what he currently offer.
               Some features require a premium membership with us, others are
               free if you have an account.
@@ -48,16 +58,23 @@ const FeaturesSection: React.FC = () => {
         />
         <Wrapper>
           {' '}
-          <div className="flex gap-[1.25rem]  items-center flex-col-reverse  lg:flex-row">
+          <div className="flex gap-[1.25rem]  items-center flex-col-reverse  lg:flex-row relative">
+            <GlowComponent className="absolute -left-[100px] -top-[80px] -z-[1]" />
             <div className=" lg:w-[50%] ">
-              <h2 className="text-[3.25rem] 2xl:text-[60px]  font-semibold text-white   lg:w-[85%] ">
+              <h2
+                className="text-[3.25rem] 2xl:text-[60px]  font-semibold text-white   lg:w-[85%] "
+                data-aos="fade-right"
+              >
                 <span className="text-secondary"> Historical </span> Flow with
                 <span className="text-[#FFF585]"> premium statistics </span>
               </h2>
             </div>
             <div className="flex flex-col gap-[2.5rem]   lg:w-[45%] lg:ml-auto">
               <div className="flex flex-col gap-4">
-                <div className="flex gap-[.7rem] flex-col  items-center sm:flex-row">
+                <div
+                  className="flex gap-[.7rem] flex-col  items-center sm:flex-row"
+                  data-aos="fade-left"
+                >
                   {/*   Card1 */}
                   <div className=" card-progress_bar w-full h-[100px] sm:w-1/2 flex  justify-between  p-[1rem] items-center ">
                     <div className="flex flex-col gap-[.7rem]">
@@ -94,7 +111,12 @@ const FeaturesSection: React.FC = () => {
                   </div>
                 </div>
                 <div className="">
-                  <img src={DatePicker} alt="Date Picker" className="w-full " />
+                  <img
+                    src={DatePicker}
+                    alt="Date Picker"
+                    className="w-full "
+                    data-aos="fade-left"
+                  />
                 </div>
               </div>
             </div>
@@ -109,14 +131,21 @@ const FeaturesSection: React.FC = () => {
               src={PurchaseTable}
               alt="Purchase Table"
               className="sm:w-[80%]"
+              data-aos="fade-right"
             />
           </div>
           <div className="flex flex-col gap-[2.5rem] lg:w-[45%] ml-auto">
-            <h2 className="text-[3.25rem] 2xl:text-[60px]  font-semibold text-white w-[80%]">
+            <h2
+              className="text-[3.25rem] 2xl:text-[60px]  font-semibold text-white w-[80%]"
+              data-aos="fade-left"
+            >
               <span className="text-secondary"> Track </span> trades within our
               flow
             </h2>
-            <p className="text-[1rem] 2xl:text-[20px] text-white font-normal leading-8">
+            <p
+              className="text-[1rem] 2xl:text-[20px] text-white font-normal leading-8"
+              data-aos="fade-left"
+            >
               We analyze every trade that comes through our systems, and
               constantly scan their prices to see what the live prices of the
               contract are worth compared to the point it was bought/sold at.

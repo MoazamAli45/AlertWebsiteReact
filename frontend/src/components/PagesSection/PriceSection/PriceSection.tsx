@@ -5,6 +5,7 @@ import CircleTick from '@/assets/icons/CircleTick';
 
 const data = [
   {
+    id: 1,
     btn: 'Annual',
     type: 'Monthly',
     save: false,
@@ -17,6 +18,7 @@ const data = [
     showBtn: false,
   },
   {
+    id: 2,
     btn: 'Monthly',
     type: 'Yearly',
     save: true,
@@ -29,6 +31,7 @@ const data = [
     showBtn: true,
   },
   {
+    id: 3,
     btn: 'Lifetime',
     type: 'Lifetime',
     save: true,
@@ -56,7 +59,11 @@ const PriceSection: React.FC = () => {
       <div className="grid gap-y-[20px]  gap-x-[20px] grid-cols-1 sm:grid-cols-2 ml:grid-cols-3 w-full">
         {/*  Price Cards */}
         {data.map((item, id) => (
-          <div className="col-span-1" key={id}>
+          <div
+            className="col-span-1"
+            key={id}
+            data-aos={`${item.id === 1 ? 'fade-right' : 'fade-left'}`}
+          >
             <div className="flex justify-center -mb-[27px] mr-[7px]">
               <button className="btn-price py-[10px]  text-[14px]  2xl:text-[18px]  ">
                 {item.btn}

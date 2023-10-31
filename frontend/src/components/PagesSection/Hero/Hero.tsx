@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import CustomTable from '../CustomTable/CustomTable';
+import CustomTable from '../../PagesComponent/CustomTable/CustomTable';
 import { useNavigate } from 'react-router-dom';
 import RightArrow from '@/assets/icons/RightArrow';
+import { Link } from 'react-scroll';
 // import GreenCircularProgress from '@/assets/icons/GreenCircularProgress';
 const Hero: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
@@ -36,7 +37,10 @@ const Hero: React.FC = () => {
         </div>
       </div> */}
       {/*  left content */}
-      <div className="flex flex-col gap-[2rem] flex-1 flex-wrap ml:pt-[1rem] w-[97%]  sm:w-full 2xl:w-[90%]  mx-auto sm:m-0">
+      <div
+        className="flex flex-col gap-[2rem] flex-1 flex-wrap ml:pt-[1rem] w-[97%]  sm:w-full 2xl:w-[90%]  mx-auto sm:m-0"
+        data-aos="fade-right"
+      >
         <h1 className="text-center   text-white font-bold text-[3rem]  2xl:text-[70px] ">
           The most
           <span className="text-secondary"> affordable </span>
@@ -53,19 +57,29 @@ const Hero: React.FC = () => {
         <div className="flex gap-[1.4rem] justify-center  lg:ml-[5rem] 2xl:justify-center">
           {!isLogin && (
             <button
-              className="btn-signup px-[2rem] py-[.7rem] 2xl:text-[20px]"
+              className="btn-signup px-[2.1rem] py-[.7rem] 2xl:text-[20px]"
               onClick={() => navigate('/signup')}
             >
               Sign Up
             </button>
           )}
-          <button className="btn-login px-[2rem] py-[.7rem] rounded-full 2xl:text-[20px] flex items-center gap-[.6rem] justify-center">
-            Pricing <RightArrow />
-          </button>
+          {isLogin && (
+            <button
+              className="btn-signup px-[2.1rem] py-[.7rem] 2xl:text-[20px]"
+              onClick={() => navigate('/dashboard')}
+            >
+              Dashboard
+            </button>
+          )}
+          <Link to="price" spy={true} smooth={true} duration={500}>
+            <button className="btn-login px-[2rem] py-[.7rem] rounded-full 2xl:text-[20px] flex items-center gap-[.6rem] justify-center">
+              Pricing <RightArrow />
+            </button>
+          </Link>
         </div>
       </div>
 
-      <div className="flex-1 flex-wrap">
+      <div className="flex-1 flex-wrap" data-aos="fade-left">
         {/* <GainerTable /> */}
         <CustomTable />
       </div>
