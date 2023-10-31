@@ -16,7 +16,7 @@ const DataSection: React.FC = () => {
         alt="Background"
         className="absolute top-0 right-0 -z-[10]"
       />
-      <div className="flex flex-col gap-[1.4rem] items-center sm:items-start  flex-1 justify-center sm:justify-start pl-[30px]">
+      <div className="flex flex-col gap-[1.4rem] items-start  flex-1 justify-center sm:justify-start pl-[30px]">
         <h2 className="text-secondary text-[3rem] font-semibold 2xl:text-[52px] ">
           Options Flow
         </h2>
@@ -29,7 +29,7 @@ const DataSection: React.FC = () => {
           individuals are buying/selling
         </p>
         {/*   Boxes */}
-        <div className="flex flex-col gap-[1.5rem] w-[90%] mx-auto sm:mx-0 sm:w-[95%]  ">
+        <div className="flex flex-col gap-[1.5rem] w-[85%] mx-auto  sm:mx-0 sm:w-[95%]  ">
           <div className="data-box px-[3.4rem] py-[2rem]  ">
             <div className="flex gap-[1.4rem] items-center flex-wrap sm:flex-row flex-col">
               <div>
