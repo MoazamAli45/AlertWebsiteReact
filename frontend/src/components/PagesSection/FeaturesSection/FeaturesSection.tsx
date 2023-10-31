@@ -21,12 +21,12 @@ const FeaturesSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-[2.5rem] lg:w-[45%] ml-auto">
-            <h2 className="text-[3.25rem]  font-semibold text-white ">
+            <h2 className="text-[3.25rem] 2xl:text-[60px] font-semibold text-white ">
               Features That Make It
               <span className="text-secondary"> Easy </span>
               For You
             </h2>
-            <p className="text-[1rem] text-white font-normal leading-8">
+            <p className="text-[1rem] 2xl:text-[20px] text-white font-thin leading-8">
               Our web app is in early access, here is what he currently offer.
               Some features require a premium membership with us, others are
               free if you have an account.
@@ -44,13 +44,13 @@ const FeaturesSection: React.FC = () => {
         <img
           src={BackgroundImage}
           alt="Background Image"
-          className="absolute top-0 right-0 -z-[10] "
+          className="absolute -top-[100px] right-0 -z-[10] "
         />
         <Wrapper>
           {' '}
           <div className="flex gap-[1.25rem]  items-center flex-col-reverse  lg:flex-row">
             <div className=" lg:w-[50%] ">
-              <h2 className="text-[3.25rem]  font-semibold text-white   lg:w-[85%] ">
+              <h2 className="text-[3.25rem] 2xl:text-[60px]  font-semibold text-white   lg:w-[85%] ">
                 <span className="text-secondary"> Historical </span> Flow with
                 <span className="text-[#FFF585]"> premium statistics </span>
               </h2>
@@ -61,16 +61,16 @@ const FeaturesSection: React.FC = () => {
                   {/*   Card1 */}
                   <div className=" card-progress_bar w-full h-[100px] sm:w-1/2 flex  justify-between  p-[1rem] items-center ">
                     <div className="flex flex-col gap-[.7rem]">
-                      <h4 className="font-bold text-white opacity-[.5]  text-[.7rem] ">
+                      <h4 className="font-bold text-white opacity-[.5]  text-[.7rem] 2xl:text-[1rem] ">
                         CALLS PREMIUM
                       </h4>
-                      <p className="font-medium text-white text-[1rem]">
+                      <p className="font-medium text-white text-[1rem] 2xl:text-[1.3rem]">
                         $22,457,169
                       </p>
                     </div>
                     <div className="realtive">
                       <GreenCircularProgress />
-                      <span className="text-[13px] font-medium text-white absolute  bottom-[40px]  right-[60px] ">
+                      <span className="text-[13px] 2xl:text-[1rem] font-medium text-white absolute  bottom-[40px]  right-[60px] ">
                         78.7%
                       </span>
                     </div>
@@ -78,16 +78,16 @@ const FeaturesSection: React.FC = () => {
                   {/*  Card2 */}
                   <div className=" card-progress_bar w-full h-[100px] sm:w-1/2 flex  justify-between px-[1.5rem] py-[.7rem] items-center ">
                     <div className="flex flex-col gap-[.7rem] ">
-                      <h4 className="font-bold text-white opacity-[.5]  text-[.7rem] ">
+                      <h4 className="font-bold text-white opacity-[.5]  text-[.7rem] 2xl:text-[1rem]">
                         CALLS PREMIUM
                       </h4>
-                      <p className="font-medium text-white text-[1rem]">
+                      <p className="font-medium text-white text-[1rem] 2xl:text-[1.3rem]">
                         $22,457,169
                       </p>
                     </div>
                     <div className="realtive">
                       <RedCircularProgress />
-                      <span className="text-[13px] font-medium text-white absolute  bottom-[40px]  right-[60px] ">
+                      <span className="text-[13px] 2xl:text-[1rem] font-medium text-white absolute  bottom-[40px]  right-[60px] ">
                         32.2%
                       </span>
                     </div>
@@ -112,11 +112,11 @@ const FeaturesSection: React.FC = () => {
             />
           </div>
           <div className="flex flex-col gap-[2.5rem] lg:w-[45%] ml-auto">
-            <h2 className="text-[3.25rem]  font-semibold text-white ">
+            <h2 className="text-[3.25rem] 2xl:text-[60px]  font-semibold text-white w-[80%]">
               <span className="text-secondary"> Track </span> trades within our
               flow
             </h2>
-            <p className="text-[1rem] text-white font-normal leading-8">
+            <p className="text-[1rem] 2xl:text-[20px] text-white font-normal leading-8">
               We analyze every trade that comes through our systems, and
               constantly scan their prices to see what the live prices of the
               contract are worth compared to the point it was bought/sold at.

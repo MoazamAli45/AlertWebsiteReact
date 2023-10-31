@@ -12,14 +12,18 @@
 } */
 
 .page {
-  background: rgb(0, 0, 0, 0.2);
+  /* background: rgb(0, 0, 0, 0.2);
   background: radial-gradient(
     circle,
     rgba(0, 0, 0, 0.2) 0%,
     rgba(18, 31, 45, 1) 68%
   );
 
-  backdrop-filter: blur(158.5px);
+  backdrop-filter: blur(158.5px); */
+  background-image: url('/frontend/public/bodyBackground.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   /* font-family: "Poppins", sans-serif; */
   font-family: 'IBM Plex Sans Hebrew', sans-serif;
   font-family: 'Poppins', sans-serif;
@@ -129,7 +133,11 @@ a:hover {
   box-shadow: 0px 0px 23px 0px rgba(44, 219, 190, 0.28);
   width: 100px;
 }
-
+@media screen and (min-width: 1526px) {
+  .btn-price {
+    width: 140px;
+  }
+}
 .diamond-icon {
   filter: drop-shadow(0 0 1rem #2bc1ae);
 }
