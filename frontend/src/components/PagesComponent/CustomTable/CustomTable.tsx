@@ -4,21 +4,19 @@ import BackgroundTable from '/CustomTableBackground.png';
 interface DataItem {
   id: number;
   name: string;
-  price: number;
+  price: string;
   width: string; // Add the 'width' property to the data item
 }
 
 const data: DataItem[] = [
-  { id: 1, name: 'SPY', price: 7088659, width: 'w-[100%]' },
-  { id: 2, name: 'NVDA', price: 3809036, width: 'w-[80%]' },
-  { id: 3, name: 'QQQ', price: 2542176, width: 'w-[70%]' },
-  // { key: 50, name: 'META', price: 1858870, width: 'w-[70%]' },
-  { id: 4, name: 'IWM', price: 1504351, width: 'w-[60%]' },
-  // { key: 50, name: 'TSLA', price: 1501251, width: 'w-[40%]' },
-  { id: 5, name: 'AMD', price: 1322782, width: 'w-[30%]' },
-  { id: 6, name: 'AAPL', price: 1201369, width: 'w-[20%]' },
-  { id: 7, name: 'AMZN', price: 1167080, width: 'w-[10%]' },
-  { id: 8, name: 'GOOGLE', price: 197364, width: 'w-[10%]' },
+  { id: 1, name: 'SPY', price: '7,088,659', width: 'w-[100%]' },
+  { id: 2, name: 'NVDA', price: '3,809,036', width: 'w-[80%]' },
+  { id: 3, name: 'QQQ', price: '2,542,176', width: 'w-[70%]' },
+  { id: 4, name: 'IWM', price: '1,504,351', width: 'w-[60%]' },
+  { id: 5, name: 'AMD', price: '1,322,782', width: 'w-[30%]' },
+  { id: 6, name: 'AAPL', price: '1,201,369', width: 'w-[20%]' },
+  { id: 7, name: 'AMZN', price: '1,167,080', width: 'w-[10%]' },
+  { id: 8, name: 'GOOGLE', price: '197,364', width: 'w-[10%]' },
 ];
 
 const CustomTable: React.FC = () => {
