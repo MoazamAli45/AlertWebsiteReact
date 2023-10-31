@@ -12,16 +12,14 @@ import React from 'react';
 const HomePage: React.FC = () => {
   return (
     <div className="page">
-      <Wrapper>
-        <Navbar />
-        <Hero />
-        <ParticleEffect />
-        <DataSection />
-        <FeaturesSection />
-        <PriceSection />
-        <DiscordSection />
-        <Footer />
-      </Wrapper>
+      <Navbar />
+      <Hero />
+      <ParticleEffect />
+      <DataSection />
+      <FeaturesSection />
+      <PriceSection />
+      <DiscordSection />
+      <Footer />
     </div>
   );
 };

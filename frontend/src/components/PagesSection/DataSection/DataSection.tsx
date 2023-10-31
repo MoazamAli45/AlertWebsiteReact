@@ -7,13 +7,16 @@ import HandIcon from '@/assets/icons/HandIcon';
 
 const DataSection: React.FC = () => {
   return (
-    <section className="flex mb-[3rem]  gap-[2rem] items-center lg:flex-row flex-col  relative ">
+    <section
+      className="flex mb-[3rem]  gap-[2rem] items-center lg:flex-row flex-col  relative "
+      id="data"
+    >
       <img
         src={BackgroundImage}
         alt="Background"
         className="absolute top-0 right-0 -z-[10]"
       />
-      <div className="flex flex-col gap-[1.4rem] flex-1 justify-center sm:justify-start">
+      <div className="flex flex-col gap-[1.4rem] flex-1 justify-center sm:justify-start pl-[30px]">
         <h2 className="text-secondary text-[3rem] font-semibold ">
           Options Flow
         </h2>

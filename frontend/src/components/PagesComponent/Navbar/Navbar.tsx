@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
 import SignupIcon from '@/assets/icons/SignupIcon';
+import { Link } from 'react-scroll';
+import Wrapper from '../Wrapper/Wrapper';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +47,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <nav className="flex  justify-between  py-[2rem] items-center ">
         {/*  Logo  */}
         <div>
@@ -54,10 +56,26 @@ const Navbar: React.FC = () => {
         {/*    Content */}
         <div className="hidden lg:flex  gap-[5rem] items-center">
           <ul className="flex gap-[4rem] list-none items-center">
-            <li>Features</li>
-            <li>Pricing</li>
-            <li>About </li>
-            <li>Data </li>
+            <li>
+              <Link to="feature" spy={true} smooth={true} duration={500}>
+                Features
+              </Link>
+            </li>
+            <li>
+              <Link to="price" spy={true} smooth={true} duration={500}>
+                Pricing
+              </Link>
+            </li>
+            <li>
+              <Link to="about" spy={true} smooth={true} duration={500}>
+                About
+              </Link>
+            </li>
+            <li>
+              <Link to="data" spy={true} smooth={true} duration={500}>
+                Data
+              </Link>
+            </li>
           </ul>
           {/*     Buttons */}
           {!isLogin && (
@@ -164,7 +182,9 @@ const Navbar: React.FC = () => {
         onClose={toggleDrawer}
         direction="left"
         size="100%"
-        className="sm:w-[100vw]  md:w-[40vw] flex flex-col justify-center align-middle"
+        className="sm:w-[100vw]  md:w-[40vw] flex flex-col justify-center align-middle
+         h-[100vh]
+        "
       >
         <div className="flex flex-col h-[95%] my-auto justify-center gap-[2.5rem] align-middle text-center">
           <div className="flex justify-end mr-[1rem]">
@@ -175,10 +195,66 @@ const Navbar: React.FC = () => {
           </div>
           <nav className=" flex flex-col justify-start align-middle gap-[2rem]  basis-[80%]  my-[6rem]">
             <ul className="text-[#001A23] flex flex-col align-middle gap-6 font-bold">
-              <li>Features</li>
-              <li>Pricing</li>
-              <li>About </li>
-              <li>Data </li>
+              <li>
+                <Link
+                  to="feature"
+                  spy={true}
+                  smooth={true}
+                  duration={500}
+                  onClick={() => {
+                    setTimeout(() => {
+                      toggleDrawer();
+                    }, 1000);
+                  }}
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="price"
+                  spy={true}
+                  smooth={true}
+                  duration={500}
+                  onClick={() => {
+                    setTimeout(() => {
+                      toggleDrawer();
+                    }, 1000);
+                  }}
+                >
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="about"
+                  spy={true}
+                  smooth={true}
+                  duration={500}
+                  onClick={() => {
+                    setTimeout(() => {
+                      toggleDrawer();
+                    }, 1000);
+                  }}
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="data"
+                  spy={true}
+                  smooth={true}
+                  duration={500}
+                  onClick={() => {
+                    setTimeout(() => {
+                      toggleDrawer();
+                    }, 1000);
+                  }}
+                >
+                  Data
+                </Link>
+              </li>
             </ul>
             {!isLogin && (
               <div className="flex flex-col gap-[.7rem] justify-center items-center">
@@ -201,7 +277,7 @@ const Navbar: React.FC = () => {
           </nav>
         </div>
       </Drawer>
-    </>
+    </Wrapper>
   );
 };
 

@@ -12,12 +12,13 @@
 } */
 
 .page {
-  background: rgb(0, 0, 0);
+  background: rgb(0, 0, 0, 0.2);
   background: radial-gradient(
     circle,
-    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.2) 0%,
     rgba(18, 31, 45, 1) 68%
   );
+
   backdrop-filter: blur(158.5px);
   /* font-family: "Poppins", sans-serif; */
   font-family: 'IBM Plex Sans Hebrew', sans-serif;

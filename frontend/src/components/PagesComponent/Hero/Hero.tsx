@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
         </div>
       </div> */}
       {/*  left content */}
-      <div className="flex flex-col gap-[2rem] flex-1 flex-wrap ml:pt-[1rem] ">
+      <div className="flex flex-col gap-[2rem] flex-1 flex-wrap ml:pt-[1rem] w-[97%]  sm:w-full mx-auto sm:m-0">
         <h1 className="text-center   text-white font-bold text-[3rem]">
           The most
           <span className="text-secondary"> affordable </span>
