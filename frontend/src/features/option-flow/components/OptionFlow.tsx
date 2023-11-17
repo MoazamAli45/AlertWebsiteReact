@@ -10,29 +10,12 @@ import { PremiumChart } from '@/features/option-flow/components/PremiumChart';
 import { TopPurchasesChart } from '@/features/option-flow/components/TopPurchasesChart';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useEffect, useState } from 'react';
-import { getOrders } from '@/store/orderReducer';
+import { getOrders, getStatisticOrders } from '@/store/orderReducer';
 import { cleanOrders } from '@/utils/cleanOrders';
 import { formatedDate } from '@/utils/formattedDate';
+import { Order } from '../types';
 Settings.defaultZone = 'America/New_York';
 
-// Define the interface for the order object
-interface Order {
-  Symbol: string;
-  Time: string;
-  'C/P': string;
-  Strike: string;
-  'Exp Date': string;
-  Side: string;
-  Size: string;
-  Price: string;
-  Prems: string;
-  DTE: string;
-  'Spot Price': string;
-  Volume: string;
-  'Open Interest': string;
-  Trade: string;
-  [key: string]: string; // Index signature allowing any
-}
 const convertPremsToNumber = (prems: string): number => {
   if (prems.endsWith('k')) {
     return parseFloat(prems.replace('k', '')) * 1000;
@@ -46,6 +29,7 @@ const convertPremsToNumber = (prems: string): number => {
 export const OptionFlow = () => {
   const dispatch = useAppDispatch();
   const { orders } = useAppSelector((state) => state.order);
+
   const [pageNo, setPage] = useState<number>(1);
   const [time, setTime] = useState<string | null>(
     //    REPLACED BY DATE.now()
@@ -74,9 +58,6 @@ export const OptionFlow = () => {
   }, [contracts, tickers, orders, premium, expire]);
 
   const handleExpireChange = (expire: number[]) => {
-    // Handle the expiration state change at the parent level
-    console.log('Expire State at Parent:', expire);
-    // Add your logic to update the parent component's state as needed
     setExpire(expire);
   };
 
@@ -85,22 +66,13 @@ export const OptionFlow = () => {
   };
 
   const handleTimeChange = (time: string | null) => {
-    // Handle the time state change at the parent level
-    console.log('Time State at Parent:', time);
-    // Add your logic to update the parent component's state as needed
     setTime(time);
   };
 
   const handleTickersChange = (tickers: { label: string; key: string }[]) => {
-    // Handle the tickers state change at the parent level
-    console.log('Tickers State at Full Parent:', tickers);
-    // Add your logic to update the parent component's state as needed
     setTickers(tickers);
   };
   const handleContractChange = (contracts: { C: boolean; P: boolean }) => {
-    // Handle the contracts state change at the parent level
-    console.log('Contracts State at Full Parent:', contracts);
-    // Add your logic to update the parent component's state as needed
     setContracts(contracts);
   };
 
@@ -129,9 +101,7 @@ export const OptionFlow = () => {
         currentTickers.some((ticker) => order.Symbol === ticker.label);
       // Convert the "Prems" attribute to numeric value
       const premsValue = convertPremsToNumber(order.Prems);
-      console.log('premsValue', premsValue);
       const normalizedPremium = premsValue / 1000000000;
-      console.log('normalizedPremium', normalizedPremium);
       // Check if the order matches the premium range
       const matchesPremiumRange =
         premiumRange[0] <= normalizedPremium &&
@@ -162,12 +132,8 @@ export const OptionFlow = () => {
 
     // Update the filtered orders state
     setFilteredOrders(newFilteredOrders);
-
-    // Log the filtered orders
-    console.log('Filtered Orders:', newFilteredOrders);
   };
 
-  console.log('filteredOrders', filteredOrders);
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en">
       <FlowContextProvider>

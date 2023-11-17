@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 
 interface OrderState {
   orders: any[]; // Define the type for orders as needed
+  statisticOrders: any[];
   // Define the type for order as needed
   isLoading: boolean;
   error: string;
@@ -13,6 +14,7 @@ interface OrderState {
 
 const initialState: OrderState = {
   orders: [],
+  statisticOrders: [],
   remainingPages: 0,
   isLoading: false,
   page: 0,
@@ -46,6 +48,22 @@ export const getOrders = createAsyncThunk(
   },
 );
 
+export const getStatisticOrders = createAsyncThunk(
+  'order/getStatisticOrders',
+  async (data: { time?: string | null }, thunkAPI) => {
+    const time = data.time || '2023-11-08';
+    try {
+      const order = await axios.get(
+        `http://74.91.123.162/api/data?Date=${time}`,
+      );
+
+      return order.data;
+    } catch (err) {
+      const axiosError = err as AxiosError; // Explicitly cast to AxiosError
+      return thunkAPI.rejectWithValue(axiosError || 'Error fetching orders');
+    }
+  },
+);
 const orderSlice = createSlice({
   name: 'order',
   initialState,
@@ -54,6 +72,9 @@ const orderSlice = createSlice({
       state.orders = [];
       state.error = '';
       state.isLoading = false;
+      state.message = '';
+      state.remainingPages = 0;
+      state.page = 0;
     },
   },
   extraReducers: (builder) => {
@@ -74,6 +95,21 @@ const orderSlice = createSlice({
       .addCase(getOrders.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.orders = [];
+        state.error = payload as string;
+        state.message = 'no  data found';
+      })
+      .addCase(getStatisticOrders.pending, (state) => {
+        state.isLoading = true;
+        state.error = '';
+        state.message = '';
+      })
+      .addCase(getStatisticOrders.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.statisticOrders = payload.data;
+      })
+      .addCase(getStatisticOrders.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.statisticOrders = [];
         state.error = payload as string;
         state.message = 'no  data found';
       });

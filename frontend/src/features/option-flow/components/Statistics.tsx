@@ -1,32 +1,16 @@
 import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart,
-  ArcElement,
-  Legend,
-  ChartData,
-  ChartOptions,
-  Title,
-} from 'chart.js';
+import { Chart, ArcElement, Legend, Title } from 'chart.js';
 import { Stack, Paper, Typography, Box, Skeleton } from '@mui/material';
-import { useFetchOrdersQuery } from '@/features/option-flow/api/queries';
-import { useFlowContext } from '@/features/option-flow/contexts/FlowContext';
-import { optionFlowConfig } from '../config';
-import { palette } from '@/theme/palette';
-import { FlowData, FlowState } from '@/features/option-flow/types';
-import { DateTime, Interval } from 'luxon';
-import { useMemo } from 'react';
+
+import { Order } from '@/features/option-flow/types';
+import { useAppSelector } from '@/store/hooks';
+import { cleanOrders } from '@/utils/cleanOrders';
 
 Chart.register(ArcElement, Legend, Title);
 
-const ChartCard = ({
-  title,
-  value,
-}: {
-  title?: string;
-  value: number | string;
-}) => {
+const ChartCard = ({ title, value }: { title?: string; value: number }) => {
   // const { isLoading } = useFetchOrdersQuery();
-  const isLoading = false;
+  const isLoading = useAppSelector((state) => state.order.isLoading);
   if (isLoading) {
     return (
       <Stack
@@ -70,9 +54,7 @@ const ChartCard = ({
         <Typography variant="h6" fontWeight={700} color="text.secondary">
           {title}
         </Typography>
-        <Typography fontWeight={500}>
-          {value.toLocaleString(undefined)}
-        </Typography>
+        <Typography fontWeight={500}>{value}</Typography>
       </Stack>
       <Box
         sx={{
@@ -87,6 +69,20 @@ const ChartCard = ({
 };
 
 export const Statistics = () => {
+  const { orders } = useAppSelector((state) => state.order);
+  console.log(orders, 'statistics');
+  const cleanedOrders = cleanOrders(orders);
+
+  // Filter orders based on contract type (PUT or CALL)
+  const putOrders = cleanedOrders.filter((order) => order['C/P'] === 'PUT');
+  const callOrders = cleanedOrders.filter((order) => order['C/P'] === 'CALL');
+  const putValue = putOrders.length;
+  const callValue = callOrders.length;
+  // Calculate the percentage of PUT and CALL cleanedOrders, rounded to 1 decimal place
+  const totalOrders = cleanedOrders.length;
+  const putPercentage = ((putValue / totalOrders) * 100).toFixed(1);
+  const callPercentage = ((callValue / totalOrders) * 100).toFixed(1);
+
   return (
     <Stack
       direction="row"
@@ -102,10 +98,10 @@ export const Statistics = () => {
       }}
     >
       <Paper>
-        <ChartCard title="Calls flow" value={0} />
+        <ChartCard title="Calls flow" value={putValue} />
       </Paper>
       <Paper>
-        <ChartCard title="Puts flow" value={0} />
+        <ChartCard title="Puts flow" value={callValue} />
       </Paper>
       <Paper>
         <ChartCard title="Calls Premium" value={0} />
