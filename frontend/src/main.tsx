@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
-
+import {store} from './store/store.ts';
+import {Provider} from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme/index.ts';
@@ -28,7 +29,9 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <GoogleOAuthProvider clientId="815619696595-ifi1k8u0u4e43aslkksvmvjgae7cdpvj.apps.googleusercontent.com">
+            <Provider store={store}>
             <App />
+            </Provider>
           </GoogleOAuthProvider>
         </ThemeProvider>
       </QueryClientProvider>

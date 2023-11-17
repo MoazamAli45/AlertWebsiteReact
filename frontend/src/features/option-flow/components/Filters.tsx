@@ -1,41 +1,84 @@
-import { useFlowContext } from '../contexts/FlowContext';
-import { optionFlowConfig } from '../config';
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ContractTag, TagRow } from './Tag';
 import { useDebounce } from '../hooks';
 import { Box, Divider, Slider, Stack, Typography } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { DateTime } from 'luxon';
-import { useFetchOrdersQuery } from '@/features/option-flow/api/queries';
-import { SearchBox } from '@/features/option-flow/components/SearchBox';
+import { optionFlowConfig } from '../config';
+import { SearchBox } from './SearchBox';
+
+interface FiltersProps {
+  onExpireChange: (expire: number[]) => void;
+  onPremiumChange: (premium: number[]) => void;
+  onTimeChange: (time: string | null) => void;
+  onTickersChange: (tickers: { label: string; key: string }[]) => void;
+  onContractChange: (contracts: { C: boolean; P: boolean }) => void;
+}
 
 function disableWeekends(date: DateTime) {
   return date.weekday === 6 || date.weekday === 7;
 }
 
-export default function Filters() {
-  const { isLoading } = useFetchOrdersQuery();
-  const { state, dispatch } = useFlowContext();
+const Filters: React.FC<FiltersProps> = ({
+  onExpireChange,
+  onPremiumChange,
+  onTimeChange,
+  onTickersChange,
+  onContractChange,
+}) => {
+  const [tickers, setTickers] = useState<{ label: string; key: string }[]>([]);
+  const [contracts, setContracts] = useState({
+    C: true,
+    P: true,
+  });
   const [expire, setExpire] = useState([0, optionFlowConfig.maxExpiration]);
   const [premium, setPremium] = useState([0, 1]);
-  const [time, setTime] = useState<DateTime | null>(state.time);
+  const [time, setTime] = useState<DateTime | null>(
+    // DateTime.now().setZone('America/New_York'),
+    DateTime.local(2023, 11, 8).setZone('America/New_York'),
+  );
+
   const debouncedExpire = useDebounce(expire, 500);
   const debouncedPremium = useDebounce(premium, 100);
   const debouncedTime = useDebounce(time, 500);
+  console.log('debouncedTime', time?.toISO());
 
-  useEffect(
-    () => dispatch({ type: 'setExpire', value: debouncedExpire }),
-    [debouncedExpire, dispatch],
-  );
-  useEffect(
-    () => dispatch({ type: 'setPremium', value: debouncedPremium }),
-    [debouncedPremium, dispatch],
-  );
+  useEffect(() => {
+    // // Handle the expiration state change
+    // // You can replace this logic with your own state management
+    // console.log('Expire State:', debouncedExpire);
+    onExpireChange(debouncedExpire);
+  }, [debouncedExpire, onExpireChange]);
 
-  useEffect(
-    () => dispatch({ type: 'setTime', value: debouncedTime }),
-    [debouncedTime, dispatch],
-  );
+  useEffect(() => {
+    // Handle the premium state change
+    // You can replace this logic with your own state management
+    // console.log('Premium State:', debouncedPremium);
+    onPremiumChange(debouncedPremium);
+  }, [debouncedPremium, onPremiumChange]);
+
+  useEffect(() => {
+    // Handle the time state change
+    // You can replace this logic with your own state management
+    // console.log('Time State:', debouncedTime);
+    if (debouncedTime) {
+      const date = new Date(
+        debouncedTime.year,
+        debouncedTime.month - 1,
+        debouncedTime.day + 1,
+        debouncedTime.hour,
+        debouncedTime.minute,
+      );
+
+      // Get the date string in the format "YYYY-MM-DD"
+      const formattedDate = date.toISOString().slice(0, 10);
+      // console.log(formattedDate);
+      onTimeChange(formattedDate);
+    }
+  }, [debouncedTime, onTimeChange]);
+  useEffect(() => {
+    onContractChange(contracts);
+  }, [contracts, onContractChange]);
 
   const handlePremiumChange = (_: Event, newValue: number | number[]) => {
     setPremium(newValue as number[]);
@@ -45,47 +88,14 @@ export default function Filters() {
     setExpire(newValue as number[]);
   };
 
-  const handleSymbolChange = useCallback(
-    (value: string[]) => {
-      if (!isLoading) {
-        const defaultSymbols = optionFlowConfig.symbols.reduce(
-          (acc, s) => ({
-            ...acc,
-            [s.toUpperCase()]: false,
-          }),
-          {},
-        );
+  const handleToggleContract = useCallback((value: Record<string, boolean>) => {
+    setContracts({ ...value } as { C: boolean; P: boolean });
+  }, []);
 
-        let symbols = value.reduce(
-          (acc, s) => ({
-            ...acc,
-            [s.toUpperCase()]: true,
-          }),
-          defaultSymbols,
-        );
-
-        if (value.length === 0)
-          symbols = optionFlowConfig.symbols.reduce(
-            (acc, s) => ({
-              ...acc,
-              [s.toUpperCase()]: true,
-            }),
-            symbols,
-          );
-
-        dispatch({ type: 'setSymbols', value: symbols });
-      }
-    },
-    [isLoading, dispatch],
-  );
-
-  const handleToggleContract = useCallback(
-    (value: Record<string, boolean>) => {
-      if (!isLoading) dispatch({ type: 'setContracts', value: { ...value } });
-    },
-    [isLoading, dispatch],
-  );
-
+  // console.log(tickers, 'From filter');
+  useEffect(() => {
+    onTickersChange(tickers);
+  }, [tickers, onTickersChange]);
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
@@ -96,12 +106,12 @@ export default function Filters() {
       <div>
         <Stack gap={1.5}>
           <Typography variant="body1">Symbol</Typography>
-          <SearchBox onSymbolChange={handleSymbolChange} />
+          <SearchBox tickers={tickers} setTickers={setTickers} />
         </Stack>
         <Stack gap={1.5} mt={2}>
           <Typography variant="body1">Contract</Typography>
           <TagRow
-            values={state.contracts}
+            values={contracts}
             Component={ContractTag}
             onChange={handleToggleContract}
           />
@@ -170,4 +180,6 @@ export default function Filters() {
       </div>
     </Stack>
   );
-}
+};
+
+export default Filters;

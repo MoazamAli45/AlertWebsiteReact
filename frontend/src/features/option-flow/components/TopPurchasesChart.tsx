@@ -19,6 +19,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 type Row = {
   contract: string;
@@ -32,26 +33,28 @@ type Row = {
 };
 
 export const TopPurchasesChart = () => {
-  const { data: orders = [], isFetched } = useFetchOrdersQuery();
+  // const { data: orders = [], isFetched } = useFetchOrdersQuery();
+  // const { orders, isLoading } = useAppSelector((state) => state.order);
 
-  const symbolStrikeKeys = getSymbolStrikeKeys(orders);
+  // const isFetched = isLoading;
+  // const symbolStrikeKeys = getSymbolStrikeKeys(orders);
 
-  const { data: options } = useQuery(
-    ['options'],
-    () => fetchOptions(symbolStrikeKeys),
-    {
-      refetchInterval: 120000,
-      enabled: isFetched,
-    },
-  );
+  // const { data: options } = useQuery(
+  //   ['options'],
+  //   () => fetchOptions(symbolStrikeKeys),
+  //   {
+  //     refetchInterval: 120000,
+  //     enabled: isFetched,
+  //   },
+  // );
 
-  const [rows, setRows] = useState<Row[]>([]);
+  // const [rows, setRows] = useState<Row[]>([]);
 
-  useEffect(() => {
-    if (options) {
-      setRows(getRows(orders, options));
-    }
-  }, [orders, options]);
+  // useEffect(() => {
+  //   if (options) {
+  //     setRows(getRows(orders, options));
+  //   }
+  // }, [orders, options]);
 
   return (
     <Paper
@@ -87,7 +90,7 @@ export const TopPurchasesChart = () => {
                 <TableCell align="right">Percent Change</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            {/* <TableBody>
               {rows.length > 0
                 ? rows
                     .sort((a, b) => Number(b.change) - Number(a.change))
@@ -157,7 +160,7 @@ export const TopPurchasesChart = () => {
                       </TableCell>
                     </TableRow>
                   ))}
-            </TableBody>
+            </TableBody> */}
           </Table>
         </TableContainer>
       </Box>
@@ -165,43 +168,43 @@ export const TopPurchasesChart = () => {
   );
 };
 
-function getRows(orders: FlowData[], options: any) {
-  return orders
-    .map((order: FlowData) => {
-      const symbolStrikeKey = `${order.symbol}:${order.strike}`;
+// function getRows(orders: FlowData[], options: any) {
+//   return orders
+//     .map((order: FlowData) => {
+//       const symbolStrikeKey = `${order.symbol}:${order.strike}`;
 
-      const contract = order.contract === 'C' ? 'call' : 'put';
+//       const contract = order.contract === 'C' ? 'call' : 'put';
 
-      const option = options[symbolStrikeKey]?.[order.key];
+//       const option = options[symbolStrikeKey]?.[order.key];
 
-      if (!option) return undefined;
+//       if (!option) return undefined;
 
-      const price = order.price / 100;
-      const newPrice = option.last;
-      const change = (((newPrice - price) / price) * 100).toFixed(2);
+//       const price = order.price / 100;
+//       const newPrice = option.last;
+//       const change = (((newPrice - price) / price) * 100).toFixed(2);
 
-      return {
-        contract,
-        change,
-        price,
-        lastPrice: option?.last,
-        symbol: order.symbol,
-        expirationDate: DateTime.fromFormat(order.expiration, 'MMddyy')
-          .startOf('day')
-          .toFormat('DD'),
-        strike: order.strike,
-        key: (Date.now() * Math.random()).toString(36),
-      } as any;
-    })
-    .filter(Boolean)
-    .filter((row) => Number(row.change) > 0);
-}
+//       return {
+//         contract,
+//         change,
+//         price,
+//         lastPrice: option?.last,
+//         symbol: order.symbol,
+//         expirationDate: DateTime.fromFormat(order.expiration, 'MMddyy')
+//           .startOf('day')
+//           .toFormat('DD'),
+//         strike: order.strike,
+//         key: (Date.now() * Math.random()).toString(36),
+//       } as any;
+//     })
+//     .filter(Boolean)
+//     .filter((row) => Number(row.change) > 0);
+// }
 
-function getSymbolStrikeKeys(orders: FlowData[]) {
-  return Object.keys(
-    orders.reduce(
-      (acc, { symbol, strike }) => ({ ...acc, [`${symbol}:${strike}`]: true }),
-      {},
-    ),
-  );
-}
+// function getSymbolStrikeKeys(orders: FlowData[]) {
+//   return Object.keys(
+//     orders.reduce(
+//       (acc, { symbol, strike }) => ({ ...acc, [`${symbol}:${strike}`]: true }),
+//       {},
+//     ),
+//   );
+// }

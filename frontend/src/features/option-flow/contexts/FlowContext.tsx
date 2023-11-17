@@ -2,6 +2,7 @@ import { createContext, useContext, useReducer } from 'react';
 import { FlowAction, FlowContextValue, FlowState } from '../types';
 import { optionFlowConfig } from '../config';
 import { DateTime } from 'luxon';
+import { useApiData } from '../api/queries';
 
 export const MAX_PREMIUM = 500000;
 
@@ -58,7 +59,7 @@ function reducer(state: FlowState, action: FlowAction) {
         ...state,
         isFetching: value,
       };
-
+  
     default:
       return state;
   }
@@ -85,6 +86,7 @@ const initialState = {
     C: true,
     P: true,
   },
+
   expire: { min: 0, max: -1 },
   premium: { min: 0, max: -1 },
   isFetching: false,

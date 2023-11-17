@@ -1,98 +1,105 @@
-import { Autocomplete, TextField } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useFetchSymbols } from '@/features/option-flow/api/queries';
-import { debounce } from '@/utils/debounce';
-
-interface SymbolProps {
-  cikStr: number;
-  ticker: string;
-  title: string;
-}
+import React, { useCallback, useState } from 'react';
+import { useAppSelector } from '@/store/hooks';
+import { cleanOrders } from '@/utils/cleanOrders';
+import {
+  Autocomplete,
+  CircularProgress,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { nanoid } from 'nanoid';
 
 interface SearchBoxProps {
-  onSymbolChange: (value: string[]) => void;
+  tickers: { label: string; key: string }[];
+  setTickers: React.Dispatch<
+    React.SetStateAction<{ label: string; key: string }[]>
+  >;
 }
 
-export const SearchBox = ({
-  onSymbolChange: onSymbolChange,
-}: SearchBoxProps) => {
+export const SearchBox: React.FC<SearchBoxProps> = ({
+  tickers,
+  setTickers,
+}) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [value, setValue] = useState<string[]>([]);
-  const { data, refetch } = useFetchSymbols({ value: inputValue, limit: 10 });
-  const [options, setOptions] = useState(data?.symbols || []);
+  const { orders } = useAppSelector((state) => state.order);
+  let cleanedOrders: any[] = [];
+  if (orders) {
+    cleanedOrders = cleanOrders(orders);
+  }
+  const [options, setOptions] = useState<{ label: string; key: string }[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const newSymbols =
-      data?.symbols?.filter(
-        (symbol: SymbolProps) => !value.includes(symbol.ticker),
-      ) || [];
-    setOptions(newSymbols);
-    setLoading(false);
-  }, [data, value]);
+  const handleInputChange = useCallback(
+    (_: React.SyntheticEvent<Element, Event>, newValue: string) => {
+      setInputValue(newValue);
+      const lowercasedValue = newValue.toLowerCase();
+      const newSymbols =
+        cleanedOrders
+          .map((order) => order.Symbol)
+          .filter((symbol) => symbol.toLowerCase().includes(lowercasedValue)) ||
+        [];
 
-  const handleInputChange = (
-    _: React.SyntheticEvent<Element, Event>,
-    newValue: string,
-  ) => {
-    setInputValue(newValue);
-    if (newValue.length > 0) {
+      // Use a Set to keep track of unique labels
+      const uniqueLabels = new Set<string>();
+
+      // Add unique keys to each option
+      const optionsWithKeys = newSymbols.reduce((acc, symbol) => {
+        const lowercasedSymbol = symbol.toLowerCase();
+        if (!uniqueLabels.has(lowercasedSymbol)) {
+          uniqueLabels.add(lowercasedSymbol);
+          acc.push({
+            label: symbol,
+            key: nanoid(), // Use a unique identifier as the key
+          });
+        }
+        return acc;
+      }, [] as { label: string; key: string }[]);
+
+      setOptions(optionsWithKeys);
       setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  };
-
-  const debounceUpdateOptions = useCallback(
-    debounce((inputValue) => {
-      if (inputValue.length > 0) {
-        setLoading(true);
-        refetch();
-      }
-    }, 500),
-    [],
+      setLoading(false);
+    },
+    [cleanedOrders],
   );
 
   return (
     <Autocomplete
       multiple
       options={options}
-      // override default filterOptions to disable the built-in filtering
       filterOptions={(x) => x}
-      getOptionLabel={(option: SymbolProps) =>
-        typeof option === 'string' ? option : option?.ticker || ''
-      }
-      renderOption={(props, option: SymbolProps) => (
-        <li {...props}>
-          {option.ticker} {option.title}
+      getOptionLabel={(option) => option.label}
+      renderOption={(props, option) => (
+        <li key={option.key} {...props}>
+          {option.label}
         </li>
       )}
       renderInput={(params) => (
         <TextField {...params} placeholder="Add tickers..." />
       )}
-      // @ts-ignore
-      value={value}
-      onChange={(_, newValue) => {
-        const tickers = newValue.map((symbol: string | SymbolProps) =>
-          typeof symbol === 'string' ? symbol : symbol?.ticker,
-        );
-        setValue(tickers);
-        onSymbolChange(tickers);
+      value={tickers}
+      onChange={(_, newValue: { label: string; key: string }[]) => {
+        // Extract the label values from newValue
+        setTickers(newValue);
+        // console.log(newValue, 'Checked');
       }}
       inputValue={inputValue}
       onInputChange={handleInputChange}
       onKeyUp={(e) => {
         if (e.key === 'ArrowDown' || e.key === 'ArrowUp') return;
-
-        debounceUpdateOptions((e.target as HTMLInputElement).value);
       }}
       open={open}
-      onOpen={() => inputValue.length > 0 && setOpen(true)}
+      onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       popupIcon={null}
       loading={loading}
-      noOptionsText="No ticker found"
+      noOptionsText={
+        loading ? (
+          <CircularProgress size={20} />
+        ) : (
+          <Typography>No data found</Typography>
+        )
+      }
       sx={{
         '& .MuiAutocomplete-inputRoot': {
           backgroundColor: 'background.paper',

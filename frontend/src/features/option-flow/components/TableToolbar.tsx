@@ -14,7 +14,7 @@ import { useState } from 'react';
 import Filters from './Filters';
 import { ReloadDropDown } from './ReloadDropDown';
 import { Box } from '@mui/system';
-
+import PropTypes from 'prop-types'; // Import PropTypes
 const FilterButtonStyled = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
   textTransform: 'none',
@@ -30,10 +30,41 @@ const FilterButtonStyled = styled(Button)(({ theme }) => ({
     },
   },
 }));
+interface TableToolsProps {
+  onExpireChange: (expire: number[]) => void;
+  onPremiumChange: (premium: number[]) => void;
+  onTimeChange: (time: string | null) => void;
+  onTickersChange: (tickers: { label: string; key: string }[]) => void;
+  onContractChange: (contracts: { C: boolean; P: boolean }) => void;
+}
 
-export function TableToolbar() {
+export const TableToolbar: React.FC<TableToolsProps> = ({
+  onExpireChange,
+  onPremiumChange,
+  onTimeChange,
+  onTickersChange,
+  onContractChange,
+}) => {
   const [open, setOpen] = useState(false);
 
+  const handleExpireChange = (expire: number[]) => {
+    onExpireChange(expire);
+  };
+
+  const handlePremiumChange = (premium: number[]) => {
+    onPremiumChange(premium);
+  };
+
+  const handleTimeChange = (time: string | null) => {
+    onTimeChange(time);
+  };
+
+  const handleTickersChange = (tickers: { label: string; key: string }[]) => {
+    onTickersChange(tickers);
+  };
+  const handleContractChange = (contracts: { C: boolean; P: boolean }) => {
+    onContractChange(contracts);
+  };
   return (
     <Paper sx={{ borderRadius: '6px' }}>
       <Toolbar sx={{ px: { xs: 2 }, py: 1 }}>
@@ -66,10 +97,23 @@ export function TableToolbar() {
             </Tooltip>
           </Stack>
           <Collapse in={open}>
-            <Filters />
+            <Filters
+              onExpireChange={handleExpireChange}
+              onPremiumChange={handlePremiumChange}
+              onTimeChange={handleTimeChange}
+              onTickersChange={handleTickersChange}
+              onContractChange={handleContractChange}
+            />
           </Collapse>
         </Stack>
       </Toolbar>
     </Paper>
   );
-}
+};
+
+TableToolbar.propTypes = {
+  onExpireChange: PropTypes.func.isRequired,
+  onPremiumChange: PropTypes.func.isRequired,
+  onTimeChange: PropTypes.func.isRequired,
+  onTickersChange: PropTypes.func.isRequired,
+};

@@ -50,10 +50,28 @@ export interface OptionFlowConfigProps {
   premiumColors: { fg: string; bg: string }[];
   contractColor: { P: string; C: string };
   executionColor: {
-    ASK: string,
-    BID: string,
-    ABOVE_ASK: string,
-    BELOW_BID: string,
-    MID: string,
-  }
+    ASK: string;
+    BID: string;
+    ABOVE_ASK: string;
+    BELOW_BID: string;
+    MID: string;
+  };
+}
+
+export interface Order {
+  Symbol: string;
+  Time: string;
+  'C/P': string;
+  Strike: string;
+  'Exp Date': string;
+  Side: string;
+  Size: string;
+  Price: string;
+  Prems: string;
+  DTE: string;
+  'Spot Price': string;
+  Volume: string;
+  'Open Interest': string;
+  Trade: string;
+  [key: string]: string; // Index signature allowing any
 }
