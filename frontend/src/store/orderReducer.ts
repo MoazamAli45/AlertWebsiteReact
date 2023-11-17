@@ -60,6 +60,9 @@ const orderSlice = createSlice({
     builder
       .addCase(getOrders.pending, (state) => {
         state.isLoading = true;
+        state.error = '';
+        state.message = '';
+        // state.orders = [];
       })
       .addCase(getOrders.fulfilled, (state, { payload }) => {
         state.isLoading = false;

@@ -81,9 +81,6 @@ export const OptionFlow = () => {
   };
 
   const handlePremiumChange = (premium: number[]) => {
-    // Handle the premium state change at the parent level
-    console.log('Premium State at Parent:', premium);
-    // Add your logic to update the parent component's state as needed
     setPremium(premium);
   };
 

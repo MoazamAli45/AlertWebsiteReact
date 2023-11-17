@@ -193,18 +193,18 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
             </TableRow>
           </MuiTableHead>
           <TableBody>
-            {orders.length === 0 &&
-              (isLoading ? (
-                <CircularProgress />
-              ) : error ? (
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  textAlign="center"
-                >
-                  {message}
-                </Typography>
-              ) : (
+            {isLoading ? (
+              <CircularProgress />
+            ) : error ? (
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                textAlign="center"
+              >
+                {message}
+              </Typography>
+            ) : (
+              orders.length === 0 && (
                 <Typography
                   variant="body1"
                   color="text.secondary"
@@ -212,8 +212,11 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                 >
                   No data
                 </Typography>
-              ))}
+              )
+            )}
             {orders.length > 0 &&
+              !isLoading &&
+              !error &&
               orders.map((row) => (
                 <TableRow
                   key={row.name}
