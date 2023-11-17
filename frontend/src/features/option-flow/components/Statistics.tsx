@@ -1,14 +1,54 @@
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Legend, Title } from 'chart.js';
 import { Stack, Paper, Typography, Box, Skeleton } from '@mui/material';
-
+import CircularProgress, {
+  CircularProgressProps,
+} from '@mui/material/CircularProgress';
 import { Order } from '@/features/option-flow/types';
 import { useAppSelector } from '@/store/hooks';
 import { cleanOrders } from '@/utils/cleanOrders';
 
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number | any },
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          color="text.secondary"
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 Chart.register(ArcElement, Legend, Title);
 
-const ChartCard = ({ title, value }: { title?: string; value: number }) => {
+const ChartCard = ({
+  title,
+  value,
+  bgcolor,
+  percentage,
+}: {
+  title?: string;
+  value: number;
+  bgcolor?: string;
+  percentage?: number;
+}) => {
   // const { isLoading } = useFetchOrdersQuery();
   const isLoading = useAppSelector((state) => state.order.isLoading);
   if (isLoading) {
@@ -62,6 +102,18 @@ const ChartCard = ({ title, value }: { title?: string; value: number }) => {
           '&:hover': { transform: 'scale(1.05)' },
         }}
       >
+        <CircularProgressWithLabel
+          value={percentage}
+          variant="determinate"
+          color="primary"
+          size={60}
+          sx={{
+            color: bgcolor,
+            '& .MuiCircularProgress-circle': {
+              strokeLinecap: 'round',
+            },
+          }}
+        />
         {/* <Doughnut {...props} width={60} height={60} /> */}
       </Box>
     </Stack>
@@ -81,6 +133,7 @@ export const Statistics = () => {
   // Calculate the percentage of PUT and CALL cleanedOrders, rounded to 1 decimal place
   const totalOrders = cleanedOrders.length;
   const putPercentage = ((putValue / totalOrders) * 100).toFixed(1);
+  console.log(typeof +putPercentage, 'putPercentage');
   const callPercentage = ((callValue / totalOrders) * 100).toFixed(1);
 
   return (
@@ -98,10 +151,20 @@ export const Statistics = () => {
       }}
     >
       <Paper>
-        <ChartCard title="Calls flow" value={putValue} />
+        <ChartCard
+          title="Calls flow"
+          value={putValue}
+          bgcolor={'#4E9B47'}
+          percentage={+putPercentage}
+        />
       </Paper>
       <Paper>
-        <ChartCard title="Puts flow" value={callValue} />
+        <ChartCard
+          title="Puts flow"
+          value={callValue}
+          percentage={+callPercentage}
+          bgcolor={'#F52203'}
+        />
       </Paper>
       <Paper>
         <ChartCard title="Calls Premium" value={0} />
