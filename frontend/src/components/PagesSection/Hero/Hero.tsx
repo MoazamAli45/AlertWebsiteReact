@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
       user = JSON.parse(userString);
       setIsLogin(true);
     }
-    console.log(user);
+    // console.log(user);
   }, []);
 
   return (

@@ -12,8 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import TuneIcon from '@mui/icons-material/Tune';
-import CallIcon from '@mui/icons-material/Call';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';

@@ -41,7 +41,7 @@ const Filters: React.FC<FiltersProps> = ({
   const debouncedExpire = useDebounce(expire, 500);
   const debouncedPremium = useDebounce(premium, 100);
   const debouncedTime = useDebounce(time, 500);
-  console.log('debouncedTime', time?.toISO());
+  // console.log('debouncedTime', time?.toISO());
 
   useEffect(() => {
     // // Handle the expiration state change

@@ -5,8 +5,7 @@ interface RowProps {
   key: number;
 }
 
-const Row: React.FC<RowProps> = ({ item, key }) => {
-  console.log(item.width);
+const Row: React.FC<RowProps> = ({ item }) => {
   return (
     <>
       <div

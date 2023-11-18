@@ -1,6 +1,5 @@
 import { useAppSelector } from '@/store/hooks';
 import {
-  Stack,
   Paper,
   Table,
   TableHead,

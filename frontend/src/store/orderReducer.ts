@@ -33,8 +33,6 @@ export const getOrders = createAsyncThunk(
   ) => {
     const page = data.pageNo || 1;
     const time = data.time || '2023-11-08';
-    console.log('page', page);
-    console.log('time', time);
     try {
       const order = await axios.get(
         `http://74.91.123.162/api/data?Date=${time}&page=${page}`,

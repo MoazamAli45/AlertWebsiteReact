@@ -95,7 +95,6 @@ export const Statistics = () => {
   // Calculate the percentage of PUT and CALL cleanedOrders, rounded to 1 decimal place
   const totalOrders = cleanedOrders.length;
   const putPercentage = ((putValue / totalOrders) * 100).toFixed(1);
-  console.log(typeof +putPercentage, 'putPercentage');
   const callPercentage = ((callValue / totalOrders) * 100).toFixed(1);
 
   const calculateTotalCostAndPercentage = (

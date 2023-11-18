@@ -72,7 +72,6 @@ export const OptionFlow = () => {
   };
 
   const handlePage = (pageNo: number) => {
-    console.log('PARENT', pageNo);
     setPage(pageNo);
   };
   const applyFilters = (
