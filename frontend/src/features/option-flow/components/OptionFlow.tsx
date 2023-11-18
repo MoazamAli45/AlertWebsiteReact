@@ -6,7 +6,6 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { Settings } from 'luxon';
 import { Statistics } from './Statistics';
 import { PremiumChart } from '@/features/option-flow/components/PremiumChart';
-import { TopPurchasesChart } from '@/features/option-flow/components/TopPurchasesChart';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useEffect, useState } from 'react';
 import { getOrders } from '@/store/orderReducer';
