@@ -24,7 +24,7 @@ const GoogleButton: React.FC = () => {
           // console.log('success');
           toast.success('Login Successful');
           setTimeout(() => {
-            window.location.href = '/dashboard';
+            window.location.href = '/option-flow';
             // navigate('/dashboard');
           }, 2000);
         }

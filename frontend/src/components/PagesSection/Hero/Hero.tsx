@@ -10,13 +10,10 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const userString = localStorage.getItem('User');
-    // console.log(user);
-    let user;
+
     if (userString) {
-      user = JSON.parse(userString);
       setIsLogin(true);
     }
-    // console.log(user);
   }, []);
 
   return (

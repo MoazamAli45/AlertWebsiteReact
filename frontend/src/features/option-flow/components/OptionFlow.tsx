@@ -54,7 +54,7 @@ export const OptionFlow = () => {
   const handlePremiumChange = (premium: number[]) => {
     setPremium(premium);
   };
-
+  console.log(refresh);
   const refreshHandler = (refresh: boolean) => {
     setRefresh(refresh);
     dispatch(getOrders({ pageNo, time }));
