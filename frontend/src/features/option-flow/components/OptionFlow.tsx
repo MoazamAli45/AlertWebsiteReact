@@ -1,6 +1,5 @@
 import { TableToolbar } from './TableToolbar';
 import { Stack } from '@mui/material';
-import FlowContextProvider from '../contexts/FlowContext';
 import { Table } from './Table';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
@@ -10,21 +9,12 @@ import { PremiumChart } from '@/features/option-flow/components/PremiumChart';
 import { TopPurchasesChart } from '@/features/option-flow/components/TopPurchasesChart';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useEffect, useState } from 'react';
-import { getOrders, getStatisticOrders } from '@/store/orderReducer';
+import { getOrders } from '@/store/orderReducer';
 import { cleanOrders } from '@/utils/cleanOrders';
 import { formatedDate } from '@/utils/formattedDate';
 import { Order } from '../types';
+import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 Settings.defaultZone = 'America/New_York';
-
-const convertPremsToNumber = (prems: string): number => {
-  if (prems.endsWith('k')) {
-    return parseFloat(prems.replace('k', '')) * 1000;
-  } else if (prems.endsWith('m')) {
-    return parseFloat(prems.replace('m', '')) * 1000000;
-  } else {
-    return parseFloat(prems);
-  }
-};
 
 export const OptionFlow = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +34,7 @@ export const OptionFlow = () => {
   const [premium, setPremium] = useState<number[]>([0, 1]);
   const cleanedOrders: Order[] = [];
   const [tickers, setTickers] = useState<{ label: string; key: string }[]>([]);
+  const [refresh, setRefresh] = useState(false);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(cleanedOrders);
   useEffect(() => {
     dispatch(getOrders({ pageNo, time }));
@@ -65,6 +56,11 @@ export const OptionFlow = () => {
     setPremium(premium);
   };
 
+  const refreshHandler = (refresh: boolean) => {
+    setRefresh(refresh);
+    dispatch(getOrders({ pageNo, time }));
+    setRefresh(false);
+  };
   const handleTimeChange = (time: string | null) => {
     setTime(time);
   };
@@ -136,25 +132,23 @@ export const OptionFlow = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en">
-      <FlowContextProvider>
-        <Stack direction="row" sx={{ height: '100%' }} gap={1}>
-          <Stack gap={1} maxWidth={425}>
-            {/* <PremiumChart /> */}
-            <TopPurchasesChart />
-          </Stack>
-          <Stack gap={1} flexGrow={1}>
-            <TableToolbar
-              onTickersChange={handleTickersChange}
-              onExpireChange={handleExpireChange}
-              onPremiumChange={handlePremiumChange}
-              onTimeChange={handleTimeChange}
-              onContractChange={handleContractChange}
-            />
-            <Statistics />
-            <Table orders={filteredOrders} onPageChange={handlePage} />
-          </Stack>
+      <Stack direction="row" sx={{ height: '100%' }} gap={1}>
+        <Stack gap={1} maxWidth={425}>
+          <PremiumChart />
         </Stack>
-      </FlowContextProvider>
+        <Stack gap={1} flexGrow={1}>
+          <TableToolbar
+            onTickersChange={handleTickersChange}
+            onExpireChange={handleExpireChange}
+            onPremiumChange={handlePremiumChange}
+            onTimeChange={handleTimeChange}
+            onContractChange={handleContractChange}
+            onRefresh={refreshHandler}
+          />
+          <Statistics />
+          <Table orders={filteredOrders} onPageChange={handlePage} />
+        </Stack>
+      </Stack>
     </LocalizationProvider>
   );
 };

@@ -1,41 +1,11 @@
-import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Legend, Title } from 'chart.js';
 import { Stack, Paper, Typography, Box, Skeleton } from '@mui/material';
-import CircularProgress, {
-  CircularProgressProps,
-} from '@mui/material/CircularProgress';
-import { Order } from '@/features/option-flow/types';
+
 import { useAppSelector } from '@/store/hooks';
 import { cleanOrders } from '@/utils/cleanOrders';
-
-function CircularProgressWithLabel(
-  props: CircularProgressProps & { value: number | any },
-) {
-  return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          color="text.secondary"
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
-
+import CircularProgress from './CircularProgress';
+import { Order } from '../types';
+import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 Chart.register(ArcElement, Legend, Title);
 
 const ChartCard = ({
@@ -43,11 +13,13 @@ const ChartCard = ({
   value,
   bgcolor,
   percentage,
+  showDollarSign = false,
 }: {
   title?: string;
   value: number;
   bgcolor?: string;
   percentage?: number;
+  showDollarSign?: boolean;
 }) => {
   // const { isLoading } = useFetchOrdersQuery();
   const isLoading = useAppSelector((state) => state.order.isLoading);
@@ -94,7 +66,9 @@ const ChartCard = ({
         <Typography variant="h6" fontWeight={700} color="text.secondary">
           {title}
         </Typography>
-        <Typography fontWeight={500}>{value}</Typography>
+        <Typography fontWeight={500}>
+          {showDollarSign ? `$${value}` : value}
+        </Typography>
       </Stack>
       <Box
         sx={{
@@ -102,19 +76,7 @@ const ChartCard = ({
           '&:hover': { transform: 'scale(1.05)' },
         }}
       >
-        <CircularProgressWithLabel
-          value={percentage}
-          variant="determinate"
-          color="primary"
-          size={60}
-          sx={{
-            color: bgcolor,
-            '& .MuiCircularProgress-circle': {
-              strokeLinecap: 'round',
-            },
-          }}
-        />
-        {/* <Doughnut {...props} width={60} height={60} /> */}
+        <CircularProgress color={bgcolor} percentage={percentage} />
       </Box>
     </Stack>
   );
@@ -122,7 +84,7 @@ const ChartCard = ({
 
 export const Statistics = () => {
   const { orders } = useAppSelector((state) => state.order);
-  console.log(orders, 'statistics');
+  // console.log(orders, 'statistics');
   const cleanedOrders = cleanOrders(orders);
 
   // Filter orders based on contract type (PUT or CALL)
@@ -135,6 +97,35 @@ export const Statistics = () => {
   const putPercentage = ((putValue / totalOrders) * 100).toFixed(1);
   console.log(typeof +putPercentage, 'putPercentage');
   const callPercentage = ((callValue / totalOrders) * 100).toFixed(1);
+
+  const calculateTotalCostAndPercentage = (
+    orders: Order[],
+    contractType: string,
+  ) => {
+    const filteredOrders = orders.filter(
+      (order) => order['C/P'] === contractType,
+    );
+    const totalCost = filteredOrders.reduce((sum, order) => {
+      const price = convertPremsToNumber(order['Prems']);
+      return sum + price;
+    }, 0);
+
+    const totalOrders = cleanedOrders.length;
+    const percentage = ((totalCost / totalCostForAllOptions) * 100).toFixed(1);
+    const costPerUnit =
+      totalOrders > 0 ? (totalCost / totalOrders).toFixed(2) : '0.00';
+
+    return { totalCost, percentage, costPerUnit };
+  };
+
+  // Calculate the total cost for all options
+  const totalCostForAllOptions = cleanedOrders.reduce((sum, order) => {
+    const price = convertPremsToNumber(order['Prems']);
+    return sum + price;
+  }, 0);
+
+  const putStats = calculateTotalCostAndPercentage(cleanedOrders, 'PUT');
+  const callStats = calculateTotalCostAndPercentage(cleanedOrders, 'CALL');
 
   return (
     <Stack
@@ -162,51 +153,28 @@ export const Statistics = () => {
         <ChartCard
           title="Puts flow"
           value={callValue}
-          percentage={+callPercentage}
-          bgcolor={'#F52203'}
+          percentage={!orders ? 0 : +callPercentage}
+          bgcolor={'#B5210B'}
         />
       </Paper>
       <Paper>
-        <ChartCard title="Calls Premium" value={0} />
+        <ChartCard
+          title="Calls Premium"
+          value={callStats.totalCost}
+          percentage={+callStats.percentage}
+          bgcolor={'#4E9B47'}
+          showDollarSign={true}
+        />
       </Paper>
       <Paper>
-        <ChartCard title="PUTS PREMIUM" value={0} />
+        <ChartCard
+          title="PUTS PREMIUM"
+          value={putStats.totalCost}
+          percentage={+putStats.percentage}
+          bgcolor={'#B5210B'}
+          showDollarSign={true}
+        />
       </Paper>
     </Stack>
   );
 };
-
-// function getFilteredData(data: FlowData[], state: FlowState) {
-//   const { symbols, expire, premium, contracts, time } = state;
-
-//   const selectedSymbols = Object.entries(symbols)
-//     .filter(([, value]) => value)
-//     .map(([key, _]) => key);
-
-//   return (
-//     data
-//       // filter symbols
-//       .filter((item) => selectedSymbols.includes(item.symbol))
-//       // filter expire
-//       .filter((item) => {
-//         const expiration = DateTime.fromFormat(item.expiration, 'MMddyy')
-//           .set({ hour: 16, minute: 0 })
-//           .toUnixInteger();
-
-//         return Interval.fromDateTimes(
-//           time.plus({ days: expire.min }),
-//           time.plus({ days: expire.max }),
-//         ).contains(DateTime.fromMillis(Number(expiration) * 1000));
-//       })
-//       // filter premium
-//       .filter((item) => {
-//         const premiumValue = item.price * item.size;
-
-//         const { min, max } = premium;
-//         if (max === -1) return true;
-//         return premiumValue <= max && premiumValue >= min;
-//       })
-//       // filter contracts
-//       .filter((item) => contracts[item.contract])
-//   );
-// }

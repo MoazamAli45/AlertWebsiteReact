@@ -12,6 +12,7 @@ import { MdKeyboardArrowUp } from 'react-icons/md';
 import { useAppSelector } from '@/store/hooks';
 import { Button } from '@mui/material';
 import { Chip } from '@mui/material';
+import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 
 function formatDate(inputDate: string): string {
   // Create a Date object from the input string
@@ -259,7 +260,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                       fontWeight: 500,
                     }}
                   >
-                    ${row.Prems}
+                    ${convertPremsToNumber(row.Prems)}
                   </TableCell>
                   <TableCell align="right">
                     {row.Side && (

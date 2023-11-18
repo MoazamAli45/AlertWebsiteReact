@@ -181,3 +181,16 @@ a:hover {
     size: 0.5em;
   }
 }
+
+.circular-progress {
+  display: block;
+}
+
+.circular-progress-background {
+  fill: none;
+  stroke: #1b2635; /* Background color */
+}
+
+.circular-progress-foreground {
+  fill: none;
+}

@@ -80,7 +80,6 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="flex-1 flex-wrap" data-aos="fade-left">
-        {/* <GainerTable /> */}
         <CustomTable />
       </div>
     </section>

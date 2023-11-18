@@ -1,29 +1,57 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import Row from './Row';
 import BackgroundTable from '/CustomTableBackground.png';
-interface DataItem {
-  id: number;
-  name: string;
-  price: string;
-  width: string; // Add the 'width' property to the data item
-}
-
-const data: DataItem[] = [
-  { id: 1, name: 'SPY', price: '7,088,659', width: 'w-[100%]' },
-  { id: 2, name: 'NVDA', price: '3,809,036', width: 'w-[80%]' },
-  { id: 3, name: 'QQQ', price: '2,542,176', width: 'w-[70%]' },
-  { id: 4, name: 'IWM', price: '1,504,351', width: 'w-[60%]' },
-  { id: 5, name: 'AMD', price: '1,322,782', width: 'w-[30%]' },
-  { id: 6, name: 'AAPL', price: '1,201,369', width: 'w-[20%]' },
-  { id: 7, name: 'AMZN', price: '1,167,080', width: 'w-[10%]' },
-  { id: 8, name: 'GOOGLE', price: '197,364', width: 'w-[10%]' },
-];
+import { cleanOrders } from '@/utils/cleanOrders';
+import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
+import { Order } from '@/features/option-flow/types';
+import axios from 'axios';
 
 const CustomTable: React.FC = () => {
-  const mappedData: DataItem[] = data.map((item) => ({
-    ...item,
-  }));
+  const [data, setData] = useState<Order[] | any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  //    TODO to be changed by
+  const time = '2023-11-08';
+  useLayoutEffect(() => {
+    setLoading(true);
+    axios
+      .get(`http://74.91.123.162/api/data?Date=${time}`)
+      .then((response) => {
+        // Handle the response data here
+        console.log(response.data);
+        setData(response?.data?.data);
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error('Error fetching data:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [time]);
+  const cleanedOrders: Order[] = cleanOrders(data);
+  const ordersWithNumericPrems = cleanedOrders?.map((order, index) => ({
+    ...order,
+    numericPrems: convertPremsToNumber(order['Prems']),
+    id: index + 1,
+  }));
+  // Sort orders based on numericPrems in descending order
+  const sortedOrders = ordersWithNumericPrems?.sort(
+    (a, b) => b.numericPrems - a.numericPrems,
+  );
+  // Find the maximum numericPrems value
+  const maxNumericPrems = sortedOrders && sortedOrders[0]?.numericPrems;
+
+  const premiumOrders =
+    maxNumericPrems &&
+    sortedOrders.map((order) => ({
+      ...order,
+      percent: ((order.numericPrems / maxNumericPrems) * 100).toFixed(0),
+      width: `w-[${((order.numericPrems / maxNumericPrems) * 100).toFixed(
+        0,
+      )}%]`,
+    }));
+  console.log(premiumOrders);
   return (
     <div
       className="w-[80%] mx-auto lg:mx-0    lg:w-full h-full     xl:w-[530px] xl:mx-auto  2xl:w-[550px] 2xl:py-[3rem] 2xl:px-[3rem] flex flex-col justify-start bg-cover py-[2rem] px-[2.5rem] rounded-3xl gap-[1.2rem] md:w-[80%]"
@@ -56,13 +84,22 @@ const CustomTable: React.FC = () => {
           </div>
         </div>
         {/* Table Body  */}
-        <div className="w-full flex flex-col items-center justify-start gap-1">
-          {/* ==> Table rows (Map the data with this row component )  */}
-          {/* ==> Make each row as a separate component to keep it as a separate entity */}
-          {mappedData.map((item, index) => (
-            <Row item={item} key={index} />
-          ))}
-        </div>
+        {loading && (
+          <div className="flex justify-center items-center w-full h-full">
+            <p>Loading....</p>
+          </div>
+        )}
+        {!loading && (
+          <div className="w-full flex flex-col items-center justify-start gap-1">
+            {/* ==> Table rows (Map the data with this row component )  */}
+            {/* ==> Make each row as a separate component to keep it as a separate entity */}
+            {!loading &&
+              premiumOrders &&
+              premiumOrders
+                ?.slice(0, 8)
+                .map((item, index) => <Row item={item} key={index} />)}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import {
   Toolbar,
   Typography,
-  Tooltip,
   Stack,
   Button,
   Collapse,
@@ -12,8 +11,10 @@ import FilterIcon from '@/assets/icons/Filter';
 import { palette } from '@/theme/palette';
 import { useState } from 'react';
 import Filters from './Filters';
-import { ReloadDropDown } from './ReloadDropDown';
+import { Refresh } from '@/assets/icons';
 import { Box } from '@mui/system';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import PropTypes from 'prop-types'; // Import PropTypes
 const FilterButtonStyled = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -36,6 +37,7 @@ interface TableToolsProps {
   onTimeChange: (time: string | null) => void;
   onTickersChange: (tickers: { label: string; key: string }[]) => void;
   onContractChange: (contracts: { C: boolean; P: boolean }) => void;
+  onRefresh: (refresh: boolean) => void;
 }
 
 export const TableToolbar: React.FC<TableToolsProps> = ({
@@ -44,9 +46,10 @@ export const TableToolbar: React.FC<TableToolsProps> = ({
   onTimeChange,
   onTickersChange,
   onContractChange,
+  onRefresh,
 }) => {
   const [open, setOpen] = useState(false);
-
+  const [refresh, setRefresh] = useState(false);
   const handleExpireChange = (expire: number[]) => {
     onExpireChange(expire);
   };
@@ -93,7 +96,14 @@ export const TableToolbar: React.FC<TableToolsProps> = ({
               Option Order Flow
             </Typography>
             <Tooltip title="Refresh data">
-              <ReloadDropDown />
+              <IconButton
+                onClick={() => {
+                  setRefresh(!refresh);
+                  onRefresh(refresh);
+                }}
+              >
+                <Refresh />
+              </IconButton>
             </Tooltip>
           </Stack>
           <Collapse in={open}>
@@ -116,4 +126,6 @@ TableToolbar.propTypes = {
   onPremiumChange: PropTypes.func.isRequired,
   onTimeChange: PropTypes.func.isRequired,
   onTickersChange: PropTypes.func.isRequired,
+  onContractChange: PropTypes.func.isRequired,
+  onRefresh: PropTypes.func.isRequired,
 };
