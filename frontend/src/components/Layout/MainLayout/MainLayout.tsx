@@ -164,16 +164,16 @@ export function MainLayout({ children }: Props) {
   };
 
   const sideNavigation: SideNavigationItem[] = [
-    {
-      title: 'Dashboard',
-      to: '/dashboard',
-      icon: TuneIcon,
-    },
-    {
-      title: 'Options Calculator',
-      to: '/long-call',
-      icon: CallIcon,
-    },
+    // {
+    //   title: 'Dashboard',
+    //   to: '/dashboard',
+    //   icon: TuneIcon,
+    // },
+    // {
+    //   title: 'Options Calculator',
+    //   to: '/long-call',
+    //   icon: CallIcon,
+    // },
     {
       title: 'Options Flow',
       to: '/option-flow',

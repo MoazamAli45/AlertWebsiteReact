@@ -8,14 +8,14 @@ import Login from '@/features/pages/Login';
 import Signup from '@/features/pages/Signup';
 import { useLocation } from 'react-router-dom';
 
-const { Dashboard } = lazyImport(
-  () => import('@/features/dashboard'),
-  'Dashboard',
-);
-const { LongCall } = lazyImport(
-  () => import('@/features/long-call'),
-  'LongCall',
-);
+// const { Dashboard } = lazyImport(
+//   () => import('@/features/dashboard'),
+//   'Dashboard',
+// );
+// const { LongCall } = lazyImport(
+//   () => import('@/features/long-call'),
+//   'LongCall',
+// );
 const { OptionFlow } = lazyImport(
   () => import('@/features/option-flow'),
   'OptionFlow',
@@ -51,11 +51,7 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '/', element: <HomePage /> },
-      { path: '/dashboard', element: <Dashboard /> },
-      {
-        path: '/long-call',
-        element: <LongCall />,
-      },
+
       {
         path: '/option-flow',
         element: <OptionFlow />,

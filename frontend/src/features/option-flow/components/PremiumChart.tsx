@@ -102,7 +102,8 @@ export const PremiumChart = () => {
                   </TableCell>
                 </TableRow>
               ))}
-            {premiumOrders &&
+            {!isLoading &&
+              premiumOrders &&
               premiumOrders.slice(0, 10).map((order, i) => (
                 <>
                   <TableRow

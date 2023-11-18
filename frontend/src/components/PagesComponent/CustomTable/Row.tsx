@@ -54,7 +54,7 @@ const Row: React.FC<RowProps> = ({ item, key }) => {
         </div>
         {/* ==> Background  */}
         <div
-          className={`${item.width} h-full absolute top-0 left-0 bg-[#40B5AD] bg-opacity-20 z-0`}
+          className={`w-${item.percent} h-full absolute top-0 left-0 bg-[#40B5AD] bg-opacity-20 z-0`}
         ></div>
       </div>
     </>

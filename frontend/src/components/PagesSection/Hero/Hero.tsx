@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
           {isLogin && (
             <button
               className="btn-signup px-[2.1rem] py-[.7rem] 2xl:text-[20px]"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/option-flow')}
             >
               Dashboard
             </button>
