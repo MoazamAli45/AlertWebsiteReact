@@ -139,6 +139,15 @@ export const PremiumChart = () => {
                   </TableRow>
                 </>
               ))}
+            {!isLoading && !premiumOrders && (
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                textAlign="center"
+              >
+                No data
+              </Typography>
+            )}
           </TableBody>
         </Table>
       </Box>

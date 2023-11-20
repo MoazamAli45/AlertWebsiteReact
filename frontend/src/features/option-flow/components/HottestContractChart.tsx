@@ -52,7 +52,7 @@ export const HottestPurcahseChart = () => {
     return +aValue - +bValue;
   });
   // Now, sortedOrders contains the array sorted based on both 'numericPrems' and 'Strike'
-  console.log(sortedOrders);
+  // console.log(sortedOrders);
   return (
     <Paper
       sx={{
@@ -149,6 +149,15 @@ export const HottestPurcahseChart = () => {
                   </TableRow>
                 </>
               ))}
+            {!isLoading && sortedOrders.length === 0 && (
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                textAlign="center"
+              >
+                No data
+              </Typography>
+            )}
           </TableBody>
         </Table>
       </Box>
