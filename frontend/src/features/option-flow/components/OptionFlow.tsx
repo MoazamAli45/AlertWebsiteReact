@@ -13,7 +13,7 @@ import { cleanOrders } from '@/utils/cleanOrders';
 import { formatedDate } from '@/utils/formattedDate';
 import { Order } from '../types';
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
-import { HottestPurcahseChart } from './HottestPurchaseChart';
+import { HottestPurcahseChart } from './HottestContractChart';
 Settings.defaultZone = 'America/New_York';
 
 export const OptionFlow = () => {

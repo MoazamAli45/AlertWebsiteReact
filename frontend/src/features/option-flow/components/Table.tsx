@@ -12,7 +12,6 @@ import { MdKeyboardArrowUp } from 'react-icons/md';
 import { useAppSelector } from '@/store/hooks';
 import { Button } from '@mui/material';
 import { Chip } from '@mui/material';
-import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 
 function formatDate(inputDate: string): string {
   // Create a Date object from the input string
@@ -90,7 +89,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   useEffect(() => {
     onPageChange(pageNo);
   }, [pageNo, onPageChange]);
-  console.log(pageNo, 'Table');
+  // console.log(pageNo, 'Table');
 
   const nextPageHandler = () => {
     setPageNo((prev) => prev + 1);
@@ -107,7 +106,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
         overflow: 'hidden',
         width: '100%',
         flexGrow: 1,
-        minHeight: 550,
+        minHeight: 720,
       }}
     >
       <TableContainer

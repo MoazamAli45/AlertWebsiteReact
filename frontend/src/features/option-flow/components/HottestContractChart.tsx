@@ -12,6 +12,27 @@ import {
 } from '@mui/material';
 import { cleanOrders } from '@/utils/cleanOrders';
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
+
+function formatDate(inputDate: string): string {
+  // Create a Date object from the input string
+  const dateObject = new Date(inputDate);
+
+  // Options for formatting the date
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  };
+
+  // Use Intl.DateTimeFormat to format the date
+  const formattedDate: string = new Intl.DateTimeFormat(
+    'en-US',
+    options,
+  ).format(dateObject);
+
+  return formattedDate;
+}
+
 export const HottestPurcahseChart = () => {
   const { isLoading, orders, error } = useAppSelector((state) => state.order);
   console.log(error);
@@ -22,23 +43,16 @@ export const HottestPurcahseChart = () => {
     numericPrems: convertPremsToNumber(order['Prems']),
     id: index + 1,
   }));
-  // Sort orders based on numericPrems in descending order
-  const sortedOrders = ordersWithNumericPrems.sort(
-    (a, b) => b.numericPrems - a.numericPrems,
-  );
-  // Find the maximum numericPrems value
-  const maxNumericPrems = sortedOrders && sortedOrders[0]?.numericPrems;
+  // Sorting the array based on both 'numericPrems' and 'Strike' in descending order
+  const sortedOrders = ordersWithNumericPrems.sort((a, b) => {
+    // Compare the sum of 'numericPrems' and 'Strike' in descending order
+    const aValue = +b.numericPrems + +b.Strike;
+    const bValue = +a.numericPrems + +a.Strike;
 
-  const premiumOrders =
-    maxNumericPrems &&
-    sortedOrders.map((order) => ({
-      ...order,
-      percent: ((order.numericPrems / maxNumericPrems) * 100).toFixed(0),
-      width: `w-[${((order.numericPrems / maxNumericPrems) * 100).toFixed(
-        0,
-      )}%]`,
-    }));
-  console.log(premiumOrders);
+    return +aValue - +bValue;
+  });
+  // Now, sortedOrders contains the array sorted based on both 'numericPrems' and 'Strike'
+  console.log(sortedOrders);
   return (
     <Paper
       sx={{
@@ -50,13 +64,15 @@ export const HottestPurcahseChart = () => {
         variant="body1"
         sx={{ fontWeight: 700, color: 'text.secondary', ml: 1.5 }}
       >
-        Hottest Purchase
+        Hottest Contract
       </Typography>
       <Box
         sx={{
           position: 'relative',
           overflowY: 'auto',
           mt: 1,
+          overflowX: 'hidden',
+          maxHeight: 400,
         }}
       >
         <Table
@@ -71,9 +87,9 @@ export const HottestPurcahseChart = () => {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Symbol</TableCell>
-              <TableCell align="center">Contract</TableCell>
-              <TableCell align="right">Premium</TableCell>
+              <TableCell>Option Details</TableCell>
+              <TableCell align="center"># of Contracts Traded </TableCell>
+              <TableCell align="right">Total Premium Combined</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,8 +118,8 @@ export const HottestPurcahseChart = () => {
                 </TableRow>
               ))}
             {!isLoading &&
-              premiumOrders &&
-              premiumOrders.slice(0, 10).map((order, i) => (
+              sortedOrders &&
+              sortedOrders.slice(0, 10).map((order, i) => (
                 <>
                   <TableRow
                     key={i}
@@ -112,30 +128,24 @@ export const HottestPurcahseChart = () => {
                       height: '34px',
                       position: 'relative',
                       zIndex: 1,
-                      backgroundColor: `${
-                        order.percent === '100' ? `#40B5AD` : `transparent`
-                      }`,
                     }}
                   >
                     <TableCell
                       component="th"
                       scope="row"
+                      //  I want to take it more width then others
+
                       sx={{ fontWeight: 700 }}
                     >
-                      {order['Symbol']}
+                      {order['Symbol']} - ${order['Strike'].slice(0, -3)}{' '}
+                      {order['C/P']} ,{formatDate(order['Exp Date'])}
                     </TableCell>
                     <TableCell align="center" sx={{ fontWeight: 700 }}>
-                      {order['C/P']}
+                      {order['Size']}
                     </TableCell>
                     <TableCell align="right" sx={{ fontWeight: 700 }}>
                       ${order['numericPrems'].toLocaleString()}
                     </TableCell>
-                    <div
-                      className={`${order.width} h-full absolute top-0 left-0 bg-[#40B5AD] bg-opacity-20 z-0`}
-                      style={{
-                        width: `${order.percent}%`,
-                      }}
-                    ></div>
                   </TableRow>
                 </>
               ))}
