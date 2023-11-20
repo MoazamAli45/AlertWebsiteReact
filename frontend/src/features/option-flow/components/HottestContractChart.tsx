@@ -66,6 +66,7 @@ export const HottestPurcahseChart = () => {
       >
         Hottest Contract
       </Typography>
+
       <Box
         sx={{
           position: 'relative',
@@ -94,7 +95,7 @@ export const HottestPurcahseChart = () => {
           </TableHead>
           <TableBody>
             {isLoading &&
-              [1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
+              [1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
                 <TableRow
                   key={i}
                   sx={{
