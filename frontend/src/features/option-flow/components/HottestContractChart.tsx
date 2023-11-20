@@ -90,7 +90,7 @@ export const HottestPurcahseChart = () => {
             <TableRow>
               <TableCell>Option Details</TableCell>
               <TableCell align="center"># of Contracts Traded </TableCell>
-              <TableCell align="right">Total Premium Combined</TableCell>
+              <TableCell align="center">Total Premium Combined</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
