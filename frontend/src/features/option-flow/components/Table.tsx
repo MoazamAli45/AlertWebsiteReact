@@ -297,7 +297,10 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
       </TableContainer>
       <div className="flex flex-row justify-end items-center py-2">
         <div className="flex flex-row gap-4 items-center">
-          <Button disabled={page === 1} onClick={previousPageHandler}>
+          <Button
+            disabled={page === 1 || page === 0}
+            onClick={previousPageHandler}
+          >
             Previous
           </Button>
           <span>{`Page ${page} `}</span>
