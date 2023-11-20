@@ -72,7 +72,7 @@ export const HottestPurcahseChart = () => {
           overflowY: 'auto',
           mt: 1,
           overflowX: 'hidden',
-          maxHeight: 400,
+          maxHeight: 380,
         }}
       >
         <Table
