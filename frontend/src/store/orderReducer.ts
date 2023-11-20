@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-
+import { API_URL } from '@/config/index';
 interface OrderState {
   orders: any[]; // Define the type for orders as needed
   statisticOrders: any[];
@@ -35,7 +35,7 @@ export const getOrders = createAsyncThunk(
     const time = data.time || '2023-11-08';
     try {
       const order = await axios.get(
-        `http://74.91.123.162/api/data?Date=${time}&page=${page}`,
+        `${API_URL}/api/data?Date=${time}&page=${page}`,
       );
 
       return { data: order.data, page };

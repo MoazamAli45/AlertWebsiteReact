@@ -4,6 +4,7 @@ import BackgroundTable from '/CustomTableBackground.png';
 import { cleanOrders } from '@/utils/cleanOrders';
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 import { Order } from '@/features/option-flow/types';
+import { API_URL } from '@/config';
 import axios from 'axios';
 
 const CustomTable: React.FC = () => {
@@ -15,7 +16,7 @@ const CustomTable: React.FC = () => {
   useLayoutEffect(() => {
     setLoading(true);
     axios
-      .get(`http://74.91.123.162/api/data?Date=${time}`)
+      .get(`${API_URL}/api/data?Date=${time}`)
       .then((response) => {
         // Handle the response data here
         console.log(response.data);

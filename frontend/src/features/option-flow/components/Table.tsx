@@ -260,7 +260,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                       fontWeight: 500,
                     }}
                   >
-                    ${convertPremsToNumber(row.Prems)}
+                    ${row.Prems}
                   </TableCell>
                   <TableCell align="right">
                     {row.Side && (

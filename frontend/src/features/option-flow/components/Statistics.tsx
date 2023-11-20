@@ -67,7 +67,7 @@ const ChartCard = ({
           {title}
         </Typography>
         <Typography fontWeight={500}>
-          {showDollarSign ? `$${value}` : value}
+          {showDollarSign ? `$${value.toLocaleString()}` : value}
         </Typography>
       </Stack>
       <Box

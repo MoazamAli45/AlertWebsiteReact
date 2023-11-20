@@ -13,6 +13,7 @@ import { cleanOrders } from '@/utils/cleanOrders';
 import { formatedDate } from '@/utils/formattedDate';
 import { Order } from '../types';
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
+import { HottestPurcahseChart } from './HottestPurchaseChart';
 Settings.defaultZone = 'America/New_York';
 
 export const OptionFlow = () => {
@@ -133,6 +134,7 @@ export const OptionFlow = () => {
       <Stack direction="row" sx={{ height: '100%' }} gap={1}>
         <Stack gap={1} maxWidth={425}>
           <PremiumChart />
+          <HottestPurcahseChart />
         </Stack>
         <Stack gap={1} flexGrow={1}>
           <TableToolbar
