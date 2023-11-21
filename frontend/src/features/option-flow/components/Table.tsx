@@ -83,7 +83,7 @@ const colorHead = 'rgba(255,255,255,.7)';
 
 export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   const [pageNo, setPageNo] = useState(1);
-  const { isLoading, error, page, remainingPages, message } = useAppSelector(
+  const { isLoading, error, remainingPages } = useAppSelector(
     (state) => state.order,
   );
 
