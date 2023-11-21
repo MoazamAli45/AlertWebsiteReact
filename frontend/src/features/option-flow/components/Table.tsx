@@ -14,6 +14,7 @@ import { Chip } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useAppDispatch } from '@/store/hooks';
 import { getOrders } from '@/store/orderReducer';
+import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 function formatDate(inputDate: string): string {
   // Create a Date object from the input string
   const dateObject = new Date(inputDate);
@@ -130,13 +131,32 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   };
 
   const sortedOrders = [...orders].sort((a, b) => {
-    const aValue = a[sortColumn];
-    const bValue = b[sortColumn];
+    console.log(sortColumn);
+    let aValue: any = a[sortColumn];
+    let bValue: any = b[sortColumn];
+
+    if (sortColumn === 'Prems') {
+      aValue = convertPremsToNumber(aValue);
+      bValue = convertPremsToNumber(bValue);
+    } else if (sortColumn === 'DTE') {
+      aValue = Number(aValue.slice(0, -1));
+      bValue = Number(bValue.slice(0, -1));
+    }
+
+    console.log(aValue, bValue, 'aValue, bValue');
 
     if (sortOrder === 'asc') {
-      return aValue.localeCompare(bValue);
+      return aValue !== undefined && bValue !== undefined
+        ? typeof aValue === 'string'
+          ? aValue.localeCompare(bValue)
+          : aValue - bValue
+        : 0;
     } else {
-      return bValue.localeCompare(aValue);
+      return bValue !== undefined && aValue !== undefined
+        ? typeof bValue === 'string'
+          ? bValue.localeCompare(aValue)
+          : bValue - aValue
+        : 0;
     }
   });
 
@@ -256,12 +276,6 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
           >
             <MuiTableHead>
               <TableRow>
-                {/* <TableCell>
-                  <span className="flex flex-row gap-2 items-center">
-                    {' '}
-                    Time <MdKeyboardArrowUp color={colorHead} />
-                  </span>
-                </TableCell> */}
                 <TableCell
                   onClick={() => handleSort('Time')}
                   sx={{ cursor: 'pointer' }}
@@ -280,13 +294,10 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                     )}
                   </span>
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{
-                    color: `${colorHead}`,
-                  }}
-                >
-                  Ticker
+                <TableCell>
+                  <span className="flex flex-row gap-2 items-center">
+                    Ticker
+                  </span>
                 </TableCell>
                 <TableCell
                   align="right"
@@ -367,11 +378,6 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
             >
               <MuiTableHead>
                 <TableRow>
-                  {/* <TableCell>
-                    <span className="flex flex-row gap-2 items-center">
-                      {' '}
-                      Time <MdKeyboardArrowUp color={colorHead} />
-                    </span> */}
                   <TableCell
                     onClick={() => handleSort('Time')}
                     sx={{ cursor: 'pointer' }}
@@ -392,97 +398,169 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                       )}
                     </span>
                   </TableCell>
-                  {/* </TableCell> */}
+
                   <TableCell
+                    onClick={() => handleSort('Symbol')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
                     align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
                   >
-                    Ticker
+                    <span className="flex flex-row gap-2 items-center">
+                      Ticker
+                      {sortColumn === 'Symbol' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
+                  </TableCell>
+
+                  <TableCell
+                    onClick={() => handleSort('Exp Date')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
+                    align="right"
+                  >
+                    <span className="flex flex-row gap-2 items-center">
+                      Expiration
+                      {sortColumn === 'Exp Date' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
+                  </TableCell>
+
+                  <TableCell
+                    onClick={() => handleSort('Strike')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
+                  >
+                    <span className="flex flex-row gap-2 items-center">
+                      Strike Price
+                      {sortColumn === 'Strike' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
+                  </TableCell>
+
+                  <TableCell
+                    onClick={() => handleSort('C/P')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
+                  >
+                    <span className="flex flex-row gap-2 items-center">
+                      Contract
+                      {sortColumn === 'C/P' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
+                  </TableCell>
+
+                  <TableCell
+                    onClick={() => handleSort('Size')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
+                  >
+                    <span className="flex flex-row gap-2 items-center">
+                      Size @ Price
+                      {sortColumn === 'Size' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
                   </TableCell>
                   <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
+                    onClick={() => handleSort('Prems')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
                   >
-                    Expiration
+                    <span className="flex flex-row gap-2 items-center">
+                      Premium
+                      {sortColumn === 'Prems' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
                   </TableCell>
                   <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
+                    onClick={() => handleSort('Side')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
                   >
-                    Strike Price
+                    <span className="flex flex-row gap-2 items-center">
+                      Execution
+                      {sortColumn === 'Side' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
                   </TableCell>
                   <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
+                    onClick={() => handleSort('DTE')}
+                    sx={{ cursor: 'pointer', color: `${colorHead}` }}
                   >
-                    Contract
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
-                  >
-                    Size @ price
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
-                  >
-                    Premium
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
-                  >
-                    Execution
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: `${colorHead}`,
-                    }}
-                  >
-                    DTE
+                    <span className="flex flex-row gap-2 items-center">
+                      DTE
+                      {sortColumn === 'DTE' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
+                    </span>
                   </TableCell>
                 </TableRow>
               </MuiTableHead>
 
               <TableBody>
-                {/* {isLoading ? (
-                <CircularProgress />
-              ) : error ? (
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  textAlign="center"
-                >
-                  {message}
-                </Typography>
-              ) : (
-                orders.length === 0 && (
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    textAlign="center"
-                  >
-                    No data
-                  </Typography>
-                )
-              )} */}
-
                 {sortedOrders.map((row) => (
                   <TableRow
                     key={row.name}
