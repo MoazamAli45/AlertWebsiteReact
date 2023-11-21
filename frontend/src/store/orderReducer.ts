@@ -53,7 +53,7 @@ export const getOrders = createAsyncThunk(
         date: time,
       };
     } catch (err: any) {
-      console.log(err.response.data);
+      // console.log(err.response.data);
       // const axiosError = err as AxiosError; // Explicitly cast to AxiosError
       return thunkAPI.rejectWithValue(
         err.response.data || 'Error fetching orders',

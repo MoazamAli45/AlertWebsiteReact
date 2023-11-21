@@ -16,6 +16,7 @@ import { Box } from '@mui/system';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import PropTypes from 'prop-types'; // Import PropTypes
+import { useAppSelector } from '@/store/hooks';
 const FilterButtonStyled = styled(Button)(({ theme }) => ({
   color: theme.palette.text.primary,
   textTransform: 'none',
@@ -50,6 +51,9 @@ export const TableToolbar: React.FC<TableToolsProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const { isLoading } = useAppSelector((state) => state.order);
+
+  const rotationStyle = isLoading ? { transform: 'rotate(360deg)' } : {};
   const handleExpireChange = (expire: number[]) => {
     onExpireChange(expire);
   };
@@ -102,7 +106,7 @@ export const TableToolbar: React.FC<TableToolsProps> = ({
                   onRefresh(refresh);
                 }}
               >
-                <Refresh />
+                <Refresh style={rotationStyle} />
               </IconButton>
             </Tooltip>
           </Stack>

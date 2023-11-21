@@ -83,21 +83,23 @@ const colorHead = 'rgba(255,255,255,.7)';
 
 export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   const [pageNo, setPageNo] = useState(1);
+  const [sortColumn, setSortColumn] = useState('Time');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const { isLoading, error, remainingPages } = useAppSelector(
     (state) => state.order,
   );
 
   const [hasMore, setHasMore] = useState(true);
   const dispatch = useAppDispatch();
-  console.log('Orders', orders);
+  // console.log('Orders', orders);
 
-  console.log(error);
+  // console.log(error);
 
   useEffect(() => {
     onPageChange(pageNo);
 
     if (error) {
-      console.log('error', error);
+      // console.log('error', error);
       //  I want to fetch that page in which error occur
       //  I want to show that error in that page
       setPageNo((prev) => prev);
@@ -121,6 +123,22 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
     setHasMore(true);
     // setPageNo((prev) => prev + 1);
   };
+  const handleSort = (column: string) => {
+    setSortColumn(column);
+    setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+    console.log(sortColumn, sortOrder, 'Checked');
+  };
+
+  const sortedOrders = [...orders].sort((a, b) => {
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+
+    if (sortOrder === 'asc') {
+      return aValue.localeCompare(bValue);
+    } else {
+      return bValue.localeCompare(aValue);
+    }
+  });
 
   return (
     <Paper
@@ -229,7 +247,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
             </TableBody>
           </MuiTable>
         )}
-        {orders.length === 0 && isLoading && (
+        {sortedOrders.length === 0 && isLoading && (
           <MuiTable
             sx={{ minWidth: 950, width: '100%' }}
             aria-labelledby="tableTitle"
@@ -238,10 +256,28 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
           >
             <MuiTableHead>
               <TableRow>
-                <TableCell>
+                {/* <TableCell>
                   <span className="flex flex-row gap-2 items-center">
                     {' '}
                     Time <MdKeyboardArrowUp color={colorHead} />
+                  </span>
+                </TableCell> */}
+                <TableCell
+                  onClick={() => handleSort('Time')}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  <span className="flex flex-row gap-2 items-center">
+                    {' '}
+                    Time{' '}
+                    {sortColumn === 'Time' && (
+                      <MdKeyboardArrowUp
+                        color={colorHead}
+                        style={{
+                          transform:
+                            sortOrder === 'desc' ? 'rotate(180deg)' : undefined,
+                        }}
+                      />
+                    )}
                   </span>
                 </TableCell>
                 <TableCell
@@ -316,7 +352,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
             </TableBody>
           </MuiTable>
         )}
-        {orders.length !== 0 && (
+        {sortedOrders.length !== 0 && (
           <InfiniteScroll
             dataLength={orders.length}
             next={fetchMoreData}
@@ -331,12 +367,32 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
             >
               <MuiTableHead>
                 <TableRow>
-                  <TableCell>
+                  {/* <TableCell>
                     <span className="flex flex-row gap-2 items-center">
                       {' '}
                       Time <MdKeyboardArrowUp color={colorHead} />
+                    </span> */}
+                  <TableCell
+                    onClick={() => handleSort('Time')}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <span className="flex flex-row gap-2 items-center">
+                      {' '}
+                      Time{' '}
+                      {sortColumn === 'Time' && (
+                        <MdKeyboardArrowUp
+                          color={colorHead}
+                          style={{
+                            transform:
+                              sortOrder === 'desc'
+                                ? 'rotate(180deg)'
+                                : undefined,
+                          }}
+                        />
+                      )}
                     </span>
                   </TableCell>
+                  {/* </TableCell> */}
                   <TableCell
                     align="right"
                     sx={{
@@ -427,7 +483,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                 )
               )} */}
 
-                {orders.map((row) => (
+                {sortedOrders.map((row) => (
                   <TableRow
                     key={row.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
