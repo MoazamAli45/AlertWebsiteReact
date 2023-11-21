@@ -4,7 +4,7 @@ import BackgroundTable from '/CustomTableBackground.png';
 import { cleanOrders } from '@/utils/cleanOrders';
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 import { Order } from '@/features/option-flow/types';
-import { API_URL } from '@/config';
+// import { API_URL } from '@/config';
 import axios from 'axios';
 
 const CustomTable: React.FC = () => {
@@ -13,10 +13,27 @@ const CustomTable: React.FC = () => {
 
   //    TODO to be changed by
   const time = '2023-11-08';
+  // const time = '2023-11-08';
+  function getCurrentDate() {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  }
+
+  const todayDate = getCurrentDate();
+  console.log(todayDate);
   useLayoutEffect(() => {
     setLoading(true);
-    axios
-      .get(`${API_URL}/api/data?Date=${time}`)
+    axios // .get(`${API_URL}/api/data?Date=${todayDate}`)
+      .get(
+        `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${todayDate}`,
+      )
       .then((response) => {
         // Handle the response data here
         console.log(response.data);

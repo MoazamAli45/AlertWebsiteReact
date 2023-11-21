@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
-import { API_URL } from '@/config/index';
+import axios from 'axios';
+// import { API_URL } from '@/config/index';
 interface OrderState {
   orders: any[]; // Define the type for orders as needed
 
@@ -38,13 +38,13 @@ export const getOrders = createAsyncThunk(
     const page = data.pageNo || 1;
     const time = data.time || formattedDate;
     try {
-      // if (time !== thunkAPI.getState().date) {
-      //   // If yes, dispatch the resetOrders action
-      //   thunkAPI.dispatch(resetOrders());
-      // }
+      // console.log('time', time);
+
       const order = await axios.get(
-        `${API_URL}/api/data?date=${time}&page=${page}`,
+        // `${API_URL}/api/data?date=${time}&page=${page}`,
+        `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${time}&page=${page}`,
       );
+
       // Check if the date has changed
 
       return {
@@ -52,9 +52,12 @@ export const getOrders = createAsyncThunk(
         page,
         date: time,
       };
-    } catch (err) {
-      const axiosError = err as AxiosError; // Explicitly cast to AxiosError
-      return thunkAPI.rejectWithValue(axiosError || 'Error fetching orders');
+    } catch (err: any) {
+      console.log(err.response.data);
+      // const axiosError = err as AxiosError; // Explicitly cast to AxiosError
+      return thunkAPI.rejectWithValue(
+        err.response.data || 'Error fetching orders',
+      );
     }
   },
 );

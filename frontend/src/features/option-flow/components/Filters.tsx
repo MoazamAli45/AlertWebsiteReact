@@ -68,11 +68,11 @@ const Filters: React.FC<FiltersProps> = ({
       const date = new Date(
         debouncedTime.year,
         debouncedTime.month - 1,
-        debouncedTime.day + 1,
+        debouncedTime.day,
         debouncedTime.hour,
         debouncedTime.minute,
       );
-
+      // console.log(date, 'DATE SELECTED');
       // Get the date string in the format "YYYY-MM-DD"
       const formattedDate = date.toISOString().slice(0, 10);
 

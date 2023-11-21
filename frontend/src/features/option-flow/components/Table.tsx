@@ -92,14 +92,24 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   console.log('Orders', orders);
 
   console.log(error);
+
   useEffect(() => {
     onPageChange(pageNo);
-  }, [pageNo, onPageChange]);
+
+    if (error) {
+      console.log('error', error);
+      //  I want to fetch that page in which error occur
+      //  I want to show that error in that page
+      setPageNo((prev) => prev);
+    }
+  }, [pageNo, onPageChange, error]);
 
   const fetchMoreData = () => {
     // console.log('fetchMoreData');
     setPageNo((prev) => prev + 1);
-    dispatch(getOrders({ pageNo }));
+    dispatch(getOrders({ pageNo })).catch((err) => {
+      console.log(err);
+    });
 
     if (pageNo === remainingPages) {
       setHasMore(false);
