@@ -10,9 +10,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import { MdKeyboardArrowUp } from 'react-icons/md';
 import { useAppSelector } from '@/store/hooks';
-import { Button } from '@mui/material';
 import { Chip } from '@mui/material';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useAppDispatch } from '@/store/hooks';
+import { getOrders } from '@/store/orderReducer';
 function formatDate(inputDate: string): string {
   // Create a Date object from the input string
   const dateObject = new Date(inputDate);
@@ -85,19 +86,32 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   const { isLoading, error, page, remainingPages, message } = useAppSelector(
     (state) => state.order,
   );
+
+  const [hasMore, setHasMore] = useState(true);
+  const dispatch = useAppDispatch();
+  console.log('Orders', orders);
+
   console.log(error);
   useEffect(() => {
     onPageChange(pageNo);
   }, [pageNo, onPageChange]);
-  // console.log(pageNo, 'Table');
 
-  const nextPageHandler = () => {
+  const fetchMoreData = () => {
+    // console.log('fetchMoreData');
     setPageNo((prev) => prev + 1);
+    dispatch(getOrders({ pageNo }));
+
+    if (pageNo === remainingPages) {
+      setHasMore(false);
+    }
+    if (remainingPages === 0) {
+      setHasMore(false);
+    }
+
+    setHasMore(true);
+    // setPageNo((prev) => prev + 1);
   };
 
-  const previousPageHandler = () => {
-    setPageNo((prev) => prev - 1);
-  };
   return (
     <Paper
       sx={{
@@ -110,192 +124,382 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
       }}
     >
       <TableContainer
-        sx={{ height: '90%', display: 'flex', flexDirection: 'column' }}
+        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
       >
-        <MuiTable
-          sx={{ minWidth: 950, width: '100%' }}
-          aria-labelledby="tableTitle"
-          size="small"
-          stickyHeader
-        >
-          <MuiTableHead>
-            <TableRow>
-              <TableCell>
-                <span className="flex flex-row gap-2 items-center">
-                  {' '}
-                  Time <MdKeyboardArrowUp color={colorHead} />
-                </span>
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Ticker
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Expiration
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Strike Price
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Contract
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Size @ price
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Premium
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                Execution
-              </TableCell>
-              <TableCell
-                align="right"
-                sx={{
-                  color: `${colorHead}`,
-                }}
-              >
-                DTE
-              </TableCell>
-            </TableRow>
-          </MuiTableHead>
-          <TableBody>
-            {isLoading ? (
-              <CircularProgress />
-            ) : error ? (
+        {orders.length === 0 && !isLoading && (
+          <MuiTable
+            sx={{ minWidth: 950, width: '100%' }}
+            aria-labelledby="tableTitle"
+            size="small"
+            stickyHeader
+          >
+            <MuiTableHead>
+              <TableRow>
+                <TableCell>
+                  <span className="flex flex-row gap-2 items-center">
+                    {' '}
+                    Time <MdKeyboardArrowUp color={colorHead} />
+                  </span>
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Ticker
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Expiration
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Strike Price
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Contract
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Size @ price
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Premium
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Execution
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  DTE
+                </TableCell>
+              </TableRow>
+            </MuiTableHead>
+
+            <TableBody>
               <Typography
                 variant="body1"
                 color="text.secondary"
                 textAlign="center"
               >
-                {message}
+                No data
               </Typography>
-            ) : (
-              orders.length === 0 && (
+            </TableBody>
+          </MuiTable>
+        )}
+        {orders.length === 0 && isLoading && (
+          <MuiTable
+            sx={{ minWidth: 950, width: '100%' }}
+            aria-labelledby="tableTitle"
+            size="small"
+            stickyHeader
+          >
+            <MuiTableHead>
+              <TableRow>
+                <TableCell>
+                  <span className="flex flex-row gap-2 items-center">
+                    {' '}
+                    Time <MdKeyboardArrowUp color={colorHead} />
+                  </span>
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Ticker
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Expiration
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Strike Price
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Contract
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Size @ price
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Premium
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  Execution
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    color: `${colorHead}`,
+                  }}
+                >
+                  DTE
+                </TableCell>
+              </TableRow>
+            </MuiTableHead>
+
+            <TableBody>
+              <CircularProgress />
+            </TableBody>
+          </MuiTable>
+        )}
+        {orders.length !== 0 && (
+          <InfiniteScroll
+            dataLength={orders.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<p className="text-center">Loading...</p>}
+          >
+            <MuiTable
+              sx={{ minWidth: 950, width: '100%' }}
+              aria-labelledby="tableTitle"
+              size="small"
+              stickyHeader
+            >
+              <MuiTableHead>
+                <TableRow>
+                  <TableCell>
+                    <span className="flex flex-row gap-2 items-center">
+                      {' '}
+                      Time <MdKeyboardArrowUp color={colorHead} />
+                    </span>
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Ticker
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Expiration
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Strike Price
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Contract
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Size @ price
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Premium
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    Execution
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      color: `${colorHead}`,
+                    }}
+                  >
+                    DTE
+                  </TableCell>
+                </TableRow>
+              </MuiTableHead>
+
+              <TableBody>
+                {/* {isLoading ? (
+                <CircularProgress />
+              ) : error ? (
                 <Typography
                   variant="body1"
                   color="text.secondary"
                   textAlign="center"
                 >
-                  No data
+                  {message}
                 </Typography>
-              )
-            )}
-            {orders.length > 0 &&
-              !isLoading &&
-              !error &&
-              orders.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {formatTimeWithAMPM(row.Time)}
-                  </TableCell>
-                  <TableCell align="right">{row.Symbol}</TableCell>
-                  <TableCell align="right">
-                    {formatDate(row[`Exp Date`])}
-                  </TableCell>
-                  <TableCell align="right">${row.Strike}</TableCell>
-                  <TableCell align="right">
-                    {row[`C/P`] && (
-                      <Chip
-                        label={row[`C/P`]}
-                        variant="outlined"
-                        sx={{
-                          border: `1px solid ${
-                            row[`C/P`] === 'PUT' ? '#F05265' : '#15BA68'
-                          }`,
-                          backgroundColor: 'transparent',
-                          fontWeight: 500,
-                          // height: '24px',
-                          boxShadow: `0 0 6px 0px ${
-                            row[`C/P`] === 'PUT' ? '#F05265' : '#15BA68'
-                          };`,
-                        }}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell align="right">
-                    {row.Size}@ ${row.Price}
-                  </TableCell>
-                  <TableCell
-                    align="right"
-                    sx={{
-                      color: ` ${row[`C/P`] === 'PUT' ? '#F05265' : '#15BA68'}`,
-                      fontWeight: 500,
-                    }}
+              ) : (
+                orders.length === 0 && (
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    textAlign="center"
                   >
-                    ${row.Prems}
-                  </TableCell>
-                  <TableCell align="right">
-                    {row.Side && (
-                      <Chip
-                        label={row.Side}
-                        variant="outlined"
-                        sx={{
-                          border: `1px solid ${
-                            row.Side === 'BELOW BID ' ||
-                            row.side === 'ABOVE ASK'
-                              ? '#FFD700'
-                              : row.Side === 'MID'
-                              ? '#96AED0'
-                              : '#DDFFE7'
-                          }`,
-                          fontWeight: 500,
-                          // height: '24px',
-                          boxShadow: `0 0 6px 0px ${
-                            row.Side === 'BELOW BID ' ||
-                            row.side === 'ABOVE ASK'
-                              ? '#FFD700'
-                              : row.Side === 'MID'
-                              ? '#96AED0'
-                              : '#DDFFE7'
-                          };`,
-                        }}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell align="right">{row.DTE.slice(0, -1)}</TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </MuiTable>
+                    No data
+                  </Typography>
+                )
+              )} */}
+
+                {orders.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {formatTimeWithAMPM(row.Time)}
+                    </TableCell>
+                    <TableCell align="right">{row.Symbol}</TableCell>
+                    <TableCell align="right">
+                      {formatDate(row[`Exp Date`])}
+                    </TableCell>
+                    <TableCell align="right">${row.Strike}</TableCell>
+                    <TableCell align="right">
+                      {row[`C/P`] && (
+                        <Chip
+                          label={row[`C/P`]}
+                          variant="outlined"
+                          sx={{
+                            border: `1px solid ${
+                              row[`C/P`] === 'PUT' ? '#F05265' : '#15BA68'
+                            }`,
+                            backgroundColor: 'transparent',
+                            fontWeight: 500,
+                            // height: '24px',
+                            boxShadow: `0 0 6px 0px ${
+                              row[`C/P`] === 'PUT' ? '#F05265' : '#15BA68'
+                            };`,
+                          }}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell align="right">
+                      {row.Size}@ ${row.Price}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                        color: ` ${
+                          row[`C/P`] === 'PUT' ? '#F05265' : '#15BA68'
+                        }`,
+                        fontWeight: 500,
+                      }}
+                    >
+                      ${row.Prems}
+                    </TableCell>
+                    <TableCell align="right">
+                      {row.Side && (
+                        <Chip
+                          label={row.Side}
+                          variant="outlined"
+                          sx={{
+                            border: `1px solid ${
+                              row.Side === 'BELOW BID ' ||
+                              row.side === 'ABOVE ASK'
+                                ? '#FFD700'
+                                : row.Side === 'MID'
+                                ? '#96AED0'
+                                : '#DDFFE7'
+                            }`,
+                            fontWeight: 500,
+                            // height: '24px',
+                            boxShadow: `0 0 6px 0px ${
+                              row.Side === 'BELOW BID ' ||
+                              row.side === 'ABOVE ASK'
+                                ? '#FFD700'
+                                : row.Side === 'MID'
+                                ? '#96AED0'
+                                : '#DDFFE7'
+                            };`,
+                          }}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell align="right">{row.DTE.slice(0, -1)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </MuiTable>
+          </InfiniteScroll>
+        )}
       </TableContainer>
-      <div className="flex flex-row justify-end items-center py-2">
+      {/* <div className="flex flex-row justify-end items-center py-2">
         <div className="flex flex-row gap-4 items-center">
           <Button
             disabled={page === 1 || page === 0}
@@ -308,7 +512,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
             Next
           </Button>
         </div>
-      </div>
+      </div> */}
     </Paper>
   );
 };

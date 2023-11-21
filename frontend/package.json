@@ -30,6 +30,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-intersection-observer": "^9.4.4",
     "react-modern-drawer": "^1.2.2",
     "react-redux": "^8.1.3",

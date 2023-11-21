@@ -6,7 +6,8 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import { DateTime } from 'luxon';
 import { optionFlowConfig } from '../config';
 import { SearchBox } from './SearchBox';
-
+import { useAppDispatch } from '@/store/hooks';
+import { resetOrders } from '@/store/orderReducer';
 interface FiltersProps {
   onExpireChange: (expire: number[]) => void;
   onPremiumChange: (premium: number[]) => void;
@@ -26,6 +27,7 @@ const Filters: React.FC<FiltersProps> = ({
   onTickersChange,
   onContractChange,
 }) => {
+  const dispatch = useAppDispatch();
   const [tickers, setTickers] = useState<{ label: string; key: string }[]>([]);
   const [contracts, setContracts] = useState({
     C: true,
@@ -34,14 +36,15 @@ const Filters: React.FC<FiltersProps> = ({
   const [expire, setExpire] = useState([0, optionFlowConfig.maxExpiration]);
   const [premium, setPremium] = useState([0, 1]);
   const [time, setTime] = useState<DateTime | null>(
-    // DateTime.now().setZone('America/New_York'),
-    DateTime.local(2023, 11, 8).setZone('America/New_York'),
+    DateTime.now().setZone('America/New_York'),
+    // DateTime.local(2023, 11, 8).setZone('America/New_York'),
   );
-
+  // console.log(date);
   const debouncedExpire = useDebounce(expire, 500);
   const debouncedPremium = useDebounce(premium, 100);
   const debouncedTime = useDebounce(time, 500);
   // console.log('debouncedTime', time?.toISO());
+  // const lastFormattedDate: any = useRef(null);
 
   useEffect(() => {
     // // Handle the expiration state change
@@ -72,10 +75,12 @@ const Filters: React.FC<FiltersProps> = ({
 
       // Get the date string in the format "YYYY-MM-DD"
       const formattedDate = date.toISOString().slice(0, 10);
-      // console.log(formattedDate);
+
+      // Check if the date has actually changed before triggering state updates
+
       onTimeChange(formattedDate);
     }
-  }, [debouncedTime, onTimeChange]);
+  }, [debouncedTime, onTimeChange, dispatch]);
   useEffect(() => {
     onContractChange(contracts);
   }, [contracts, onContractChange]);
@@ -91,7 +96,7 @@ const Filters: React.FC<FiltersProps> = ({
   const handleToggleContract = useCallback((value: Record<string, boolean>) => {
     setContracts({ ...value } as { C: boolean; P: boolean });
   }, []);
-
+  // console.log(time, 'TIME');
   // console.log(tickers, 'From filter');
   useEffect(() => {
     onTickersChange(tickers);
@@ -165,8 +170,12 @@ const Filters: React.FC<FiltersProps> = ({
         <Stack gap={2}>
           <Typography variant="body1">Pick a date</Typography>
           <DateTimePicker
+            // ref={lastFormattedDate}
             value={time}
-            onChange={(newValue) => setTime(newValue)}
+            onChange={(newValue) => {
+              setTime(newValue);
+              dispatch(resetOrders());
+            }}
             sx={{
               width: 245,
               '& .MuiInputBase-root': {

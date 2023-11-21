@@ -24,7 +24,7 @@ export const OptionFlow = () => {
   const [time, setTime] = useState<string | null>(
     //    REPLACED BY DATE.now()
     //                                    TODO
-    formatedDate(new Date(2023, 10, 8)),
+    formatedDate(new Date()),
   );
   const [contracts, setContracts] = useState<{ C: boolean; P: boolean }>({
     C: true,
@@ -36,6 +36,7 @@ export const OptionFlow = () => {
   const [tickers, setTickers] = useState<{ label: string; key: string }[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(cleanedOrders);
+
   useEffect(() => {
     dispatch(getOrders({ pageNo, time }));
   }, [dispatch, pageNo, time]);
@@ -63,6 +64,8 @@ export const OptionFlow = () => {
   };
   const handleTimeChange = (time: string | null) => {
     setTime(time);
+    setPage(1);
+    // dispatch(resetOrders());
   };
 
   const handleTickersChange = (tickers: { label: string; key: string }[]) => {
