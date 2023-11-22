@@ -49,11 +49,11 @@ export const getOrders = createAsyncThunk(
     const page = data.pageNo || 1;
     const time = data.time || getCurrentDate();
     try {
-      console.log('time', time);
-      console.log(
-        'url',
-        `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${time}&page=${page}`,
-      );
+      // console.log('time', time);
+      // console.log(
+      //   'url',
+      //   `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${time}&page=${page}`,
+      // );
       const order = await axios.get(
         // `${API_URL}/api/data?date=${time}&page=${page}`,
         `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${time}&page=${page}`,
