@@ -34,8 +34,7 @@ function formatDate(inputDate: string): string {
 }
 
 export const HottestPurcahseChart = () => {
-  const { isLoading, orders, error } = useAppSelector((state) => state.order);
-  console.log(error);
+  const { isLoading, orders } = useAppSelector((state) => state.order);
   // console.log(orders, 'statistics');
   const cleanedOrders = cleanOrders(orders);
   const ordersWithNumericPrems = cleanedOrders.map((order, index) => ({

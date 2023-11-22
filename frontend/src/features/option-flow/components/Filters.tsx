@@ -37,14 +37,11 @@ const Filters: React.FC<FiltersProps> = ({
   const [premium, setPremium] = useState([0, 1]);
   const [time, setTime] = useState<DateTime | null>(
     DateTime.now().setZone('America/New_York'),
-    // DateTime.local(2023, 11, 8).setZone('America/New_York'),
   );
   // console.log(date);
   const debouncedExpire = useDebounce(expire, 500);
   const debouncedPremium = useDebounce(premium, 100);
   const debouncedTime = useDebounce(time, 500);
-  // console.log('debouncedTime', time?.toISO());
-  // const lastFormattedDate: any = useRef(null);
 
   useEffect(() => {
     // // Handle the expiration state change
@@ -68,11 +65,10 @@ const Filters: React.FC<FiltersProps> = ({
       const date = new Date(
         debouncedTime.year,
         debouncedTime.month - 1,
-        debouncedTime.day,
+        debouncedTime.hour > 12 ? debouncedTime.day : debouncedTime.day,
         debouncedTime.hour,
         debouncedTime.minute,
       );
-      // console.log(date, 'DATE SELECTED');
       // Get the date string in the format "YYYY-MM-DD"
       const formattedDate = date.toISOString().slice(0, 10);
 

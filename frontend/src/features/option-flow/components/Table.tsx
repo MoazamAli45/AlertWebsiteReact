@@ -12,8 +12,7 @@ import { MdKeyboardArrowUp } from 'react-icons/md';
 import { useAppSelector } from '@/store/hooks';
 import { Chip } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useAppDispatch } from '@/store/hooks';
-import { getOrders } from '@/store/orderReducer';
+
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 function formatDate(inputDate: string): string {
   // Create a Date object from the input string
@@ -86,52 +85,28 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
   const [pageNo, setPageNo] = useState(1);
   const [sortColumn, setSortColumn] = useState('Time');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const { isLoading, error, remainingPages } = useAppSelector(
-    (state) => state.order,
-  );
+  const { isLoading, remainingPages } = useAppSelector((state) => state.order);
 
   const [hasMore, setHasMore] = useState(true);
-  const dispatch = useAppDispatch();
-  // console.log('Orders', orders);
-
-  // console.log(error);
 
   useEffect(() => {
     onPageChange(pageNo);
-
-    if (error) {
-      // console.log('error', error);
-      //  I want to fetch that page in which error occur
-      //  I want to show that error in that page
-      setPageNo((prev) => prev);
-    }
-  }, [pageNo, onPageChange, error]);
+  }, [pageNo, onPageChange, remainingPages]);
 
   const fetchMoreData = () => {
-    // console.log('fetchMoreData');
-    setPageNo((prev) => prev + 1);
-    dispatch(getOrders({ pageNo })).catch((err) => {
-      console.log(err);
-    });
-
-    if (pageNo === remainingPages) {
-      setHasMore(false);
-    }
     if (remainingPages === 0) {
       setHasMore(false);
+    } else {
+      setPageNo((prev) => prev + 1);
     }
-
-    setHasMore(true);
-    // setPageNo((prev) => prev + 1);
   };
+
   const handleSort = (column: string) => {
     setSortColumn(column);
     setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
-    console.log(sortColumn, sortOrder, 'Checked');
   };
 
   const sortedOrders = [...orders].sort((a, b) => {
-    console.log(sortColumn);
     let aValue: any = a[sortColumn];
     let bValue: any = b[sortColumn];
 
@@ -142,8 +117,6 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
       aValue = Number(aValue.slice(0, -1));
       bValue = Number(bValue.slice(0, -1));
     }
-
-    console.log(aValue, bValue, 'aValue, bValue');
 
     if (sortOrder === 'asc') {
       return aValue !== undefined && bValue !== undefined
@@ -283,15 +256,6 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   <span className="flex flex-row gap-2 items-center">
                     {' '}
                     Time{' '}
-                    {sortColumn === 'Time' && (
-                      <MdKeyboardArrowUp
-                        color={colorHead}
-                        style={{
-                          transform:
-                            sortOrder === 'desc' ? 'rotate(180deg)' : undefined,
-                        }}
-                      />
-                    )}
                   </span>
                 </TableCell>
                 <TableCell>
@@ -364,19 +328,24 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
           </MuiTable>
         )}
         {sortedOrders.length !== 0 && (
-          <InfiniteScroll
-            dataLength={orders.length}
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={<p className="text-center">Loading...</p>}
+          <MuiTable
+            sx={{ minWidth: 950, width: '100%' }}
+            aria-labelledby="tableTitle"
+            size="small"
+            stickyHeader
           >
-            <MuiTable
-              sx={{ minWidth: 950, width: '100%' }}
-              aria-labelledby="tableTitle"
-              size="small"
-              stickyHeader
+            <InfiniteScroll
+              dataLength={sortedOrders.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              loader={<p className="text-center">Loading...</p>}
+              className="!w-full"
             >
-              <MuiTableHead>
+              <MuiTableHead
+                sx={{
+                  width: '100%',
+                }}
+              >
                 <TableRow>
                   <TableCell
                     onClick={() => handleSort('Time')}
@@ -385,7 +354,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                     <span className="flex flex-row gap-2 items-center">
                       {' '}
                       Time{' '}
-                      {sortColumn === 'Time' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -395,7 +364,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
 
@@ -406,7 +375,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Ticker
-                      {sortColumn === 'Symbol' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -416,7 +385,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
 
@@ -427,7 +396,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Expiration
-                      {sortColumn === 'Exp Date' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -437,7 +406,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
 
@@ -447,7 +416,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Strike Price
-                      {sortColumn === 'Strike' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -457,7 +426,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
 
@@ -467,7 +436,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Contract
-                      {sortColumn === 'C/P' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -477,7 +446,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
 
@@ -487,7 +456,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Size @ Price
-                      {sortColumn === 'Size' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -497,7 +466,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
                   <TableCell
@@ -506,7 +475,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Premium
-                      {sortColumn === 'Prems' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -516,7 +485,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
                   <TableCell
@@ -525,7 +494,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       Execution
-                      {sortColumn === 'Side' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -535,7 +504,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
                   <TableCell
@@ -544,7 +513,7 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   >
                     <span className="flex flex-row gap-2 items-center">
                       DTE
-                      {sortColumn === 'DTE' && (
+                      {
                         <MdKeyboardArrowUp
                           color={colorHead}
                           style={{
@@ -554,13 +523,17 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                                 : undefined,
                           }}
                         />
-                      )}
+                      }
                     </span>
                   </TableCell>
                 </TableRow>
               </MuiTableHead>
 
-              <TableBody>
+              <TableBody
+                sx={{
+                  width: '100%',
+                }}
+              >
                 {sortedOrders.map((row) => (
                   <TableRow
                     key={row.name}
@@ -639,24 +612,10 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   </TableRow>
                 ))}
               </TableBody>
-            </MuiTable>
-          </InfiniteScroll>
+            </InfiniteScroll>
+          </MuiTable>
         )}
       </TableContainer>
-      {/* <div className="flex flex-row justify-end items-center py-2">
-        <div className="flex flex-row gap-4 items-center">
-          <Button
-            disabled={page === 1 || page === 0}
-            onClick={previousPageHandler}
-          >
-            Previous
-          </Button>
-          <span>{`Page ${page} `}</span>
-          <Button disabled={remainingPages === 0} onClick={nextPageHandler}>
-            Next
-          </Button>
-        </div>
-      </div> */}
     </Paper>
   );
 };

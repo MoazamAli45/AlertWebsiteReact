@@ -1,6 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 // import { API_URL } from '@/config/index';
+function getCurrentDate() {
+  const currentDate = new Date();
+  // console.log(currentDate, 'CUrrent');
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+
+  const formattedDate = `${year}-${month}-${day}`;
+  // console.log('Formatted', formattedDate);
+  return formattedDate;
+}
 interface OrderState {
   orders: any[]; // Define the type for orders as needed
 
@@ -33,13 +44,16 @@ export const getOrders = createAsyncThunk(
     },
     thunkAPI: any,
   ) => {
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('en-GB');
+    // const today = new Date();
+    // const formattedDate = today.toLocaleDateString('en-GB');
     const page = data.pageNo || 1;
-    const time = data.time || formattedDate;
+    const time = data.time || getCurrentDate();
     try {
-      // console.log('time', time);
-
+      console.log('time', time);
+      console.log(
+        'url',
+        `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${time}&page=${page}`,
+      );
       const order = await axios.get(
         // `${API_URL}/api/data?date=${time}&page=${page}`,
         `https://alphasweeps-ae44af8990fe.herokuapp.com/api/data?date=${time}&page=${page}`,

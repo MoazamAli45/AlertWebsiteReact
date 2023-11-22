@@ -12,7 +12,7 @@ const CustomTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   //    TODO to be changed by
-  const time = '2023-11-08';
+  // const time = '2023-11-08';
   // const time = '2023-11-08';
   function getCurrentDate() {
     const currentDate = new Date();
@@ -46,7 +46,7 @@ const CustomTable: React.FC = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [time]);
+  }, []);
   const cleanedOrders: Order[] = cleanOrders(data);
   const ordersWithNumericPrems = cleanedOrders?.map((order, index) => ({
     ...order,

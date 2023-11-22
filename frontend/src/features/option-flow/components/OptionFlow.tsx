@@ -10,22 +10,30 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useEffect, useState } from 'react';
 import { getOrders } from '@/store/orderReducer';
 import { cleanOrders } from '@/utils/cleanOrders';
-import { formatedDate } from '@/utils/formattedDate';
 import { Order } from '../types';
 import { convertPremsToNumber } from '@/utils/convertPremsToNumber';
 import { HottestPurcahseChart } from './HottestContractChart';
 Settings.defaultZone = 'America/New_York';
+function getCurrentDate() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+}
 
 export const OptionFlow = () => {
+  const todayDate = getCurrentDate();
+  // console.log(todayDate);
+
   const dispatch = useAppDispatch();
   const { orders } = useAppSelector((state) => state.order);
 
   const [pageNo, setPage] = useState<number>(1);
-  const [time, setTime] = useState<string | null>(
-    //    REPLACED BY DATE.now()
-    //                                    TODO
-    formatedDate(new Date()),
-  );
+  const [time, setTime] = useState<string | null>(todayDate);
+
   const [contracts, setContracts] = useState<{ C: boolean; P: boolean }>({
     C: true,
     P: true,
@@ -37,10 +45,11 @@ export const OptionFlow = () => {
   const [refresh, setRefresh] = useState(false);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(cleanedOrders);
 
+  console.log(refresh);
   useEffect(() => {
+    // console.log('Page And time', pageNo, time);
     dispatch(getOrders({ pageNo, time }));
-  }, [dispatch, pageNo, time]);
-  // console.log('orders', orders);
+  }, [dispatch, time, pageNo]);
   useEffect(() => {
     let cleanedOrders: Order[] = [];
     if (orders) {
@@ -56,7 +65,6 @@ export const OptionFlow = () => {
   const handlePremiumChange = (premium: number[]) => {
     setPremium(premium);
   };
-  console.log(refresh);
   const refreshHandler = (refresh: boolean) => {
     setRefresh(refresh);
     dispatch(getOrders({ pageNo, time }));

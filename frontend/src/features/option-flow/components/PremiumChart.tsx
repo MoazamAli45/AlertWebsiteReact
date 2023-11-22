@@ -38,7 +38,7 @@ export const PremiumChart = () => {
         0,
       )}%]`,
     }));
-  console.log(premiumOrders);
+  // console.log(premiumOrders);
   return (
     <Paper
       sx={{
