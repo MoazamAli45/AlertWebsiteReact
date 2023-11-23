@@ -140,12 +140,18 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
         borderRadius: '6px',
         overflow: 'hidden',
         width: '100%',
+
         flexGrow: 1,
         minHeight: 720,
       }}
     >
       <TableContainer
-        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+        }}
       >
         {orders.length === 0 && !isLoading && (
           <MuiTable
@@ -328,18 +334,21 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
           </MuiTable>
         )}
         {sortedOrders.length !== 0 && (
-          <MuiTable
-            sx={{ minWidth: 950, width: '100%' }}
-            aria-labelledby="tableTitle"
-            size="small"
-            stickyHeader
+          <InfiniteScroll
+            dataLength={sortedOrders.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<p className="text-center">Loading...</p>}
+            className="!w-full"
+            style={{
+              width: '100%',
+            }}
           >
-            <InfiniteScroll
-              dataLength={sortedOrders.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={<p className="text-center">Loading...</p>}
-              className="!w-full"
+            <MuiTable
+              sx={{ minWidth: 950, width: '100%' }}
+              aria-labelledby="tableTitle"
+              size="small"
+              stickyHeader
             >
               <MuiTableHead
                 sx={{
@@ -612,8 +621,8 @@ export const Table: React.FC<TableProps> = ({ orders, onPageChange }) => {
                   </TableRow>
                 ))}
               </TableBody>
-            </InfiniteScroll>
-          </MuiTable>
+            </MuiTable>
+          </InfiniteScroll>
         )}
       </TableContainer>
     </Paper>

@@ -65,7 +65,7 @@ const Filters: React.FC<FiltersProps> = ({
       const date = new Date(
         debouncedTime.year,
         debouncedTime.month - 1,
-        debouncedTime.hour > 12 ? debouncedTime.day : debouncedTime.day,
+        debouncedTime.hour > 12 ? debouncedTime.day : debouncedTime.day + 1,
         debouncedTime.hour,
         debouncedTime.minute,
       );
